@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Spoqa+Han+Sans+Neo:wght@400;700&display=swap');
+
+body {
+  font-family: 'Pretendard Variable', sans-serif;
+  background: linear-gradient(to bottom, #fce4ec, #e1f5fe);
+  margin: 0;
+  padding: 0;
+  color: #4b3b40;
+}
+
+#game-container {
+  max-width: 80%;
+  margin: 64px auto;
+  padding: 30px;
+  background-color: #f9f4ff;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255, 192, 203, 0.4);
+  border: 2px solid #ffe0f0;
+}
+
+h1, h2, h3, .title {
+  font-family: 'Gowun Dodum', sans-serif;
+  font-weight: bold;
+  color: #884b8b;
+  margin-bottom: 0.5em;
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.flex-line {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+.intro-item {
+  box-sizing: border-box;
+  padding: 32px;
+  background-color: var(--item-bg, #ffffff);
+  border: 2px solid #ffc1e3;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(255, 182, 193, 0.2);
+  word-break: keep-all;
+}
+
+.intro-img {
+  max-width: 100%;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.textbox-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.textbox-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.textbox-image {
+  max-width: 40%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(200, 200, 255, 0.3);
+}
+
+.quote {
+  display: block;
+  width: 90%;
+  background-color: #fff0f5;
+  border-left: 4px solid #ff80ab;
+  padding: 10px 15px;
+  margin: 32px;
+  font-style: italic;
+  border-radius: 10px;
+  color: #5c4a57;
+  word-break: keep-all;
+  line-height: 1.6;
+}
+
+
+button.fancy-button {
+  width: 100%;
+  text-align: center;
+  background-color: #ffe4ec;
+  border: 3px solid #ffb6c1;
+  border-radius: 20px;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #4b3b40;
+  box-shadow: 0 5px 10px rgba(255, 182, 193, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button.fancy-button:hover {
+  background-color: #f8bbd0;
+}
+
+button.fancy-button.active {
+  background-color: #d1c4e9;
+  border-color: #b39ddb;
+}
+
+.fancy-button .button-title {
+  font-family: 'Gowun Dodum', sans-serif;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.fancy-button .button-text {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+hr {
+  border: none;
+  border-top: 2px dashed #eeccee;
+  margin: 1em 0;
+}
+
+.full-line {
+  border: none;
+  border-top: 3px dashed #ddaadd;
+  margin: 30px 0;
+  width: 100%;
+}
+
+#status-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  border-top: 2px solid #ffc1e3;
+  padding: 10px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  z-index: 1000;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.status-box {
+  background: #fce4ec;
+  border: 1px solid #f8bbd0;
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4b3b40;
+  box-shadow: 0 2px 5px rgba(255, 182, 193, 0.2);
+  white-space: nowrap;
+  transition: transform 0.2s ease;
+}
+
+.status-box:hover {
+  transform: scale(1.05);
+}

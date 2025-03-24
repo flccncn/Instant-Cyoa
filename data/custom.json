@@ -1,0 +1,16 @@
+{
+  "종족 선택": {
+    "description": "설명.",
+    "elements": [
+		{
+		"type": "button",
+		"title": "초록 슬라임",
+		"actionType": "toggle",
+		"events": [
+		  { "type": "setValue", "target":"tags", "operation":"add", "value":"초록슬라임" }
+		],
+		"width":25
+		}
+    ]
+  }
+}

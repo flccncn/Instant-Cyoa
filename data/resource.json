@@ -1,0 +1,32 @@
+{
+	"gold":{
+		"name": "소지금",
+		"value": 100,
+		"realValue": 100,
+		"show": true
+	},
+	"str":{
+		"name": "근력",
+		"value": 10,
+		"realValue": 10,
+		"show": true
+	},
+	"int":{
+		"name": "지능",
+		"value": 10,
+		"realValue": 10,
+		"show": true
+	},
+	"ethics":{
+		"name": "윤리",
+		"value": 0,
+		"realValue": 0,
+		"show": true
+	},
+	"love":{
+		"name": "애정도",
+		"value": 50,
+		"realValue": 50,
+		"show": true
+	}
+}
