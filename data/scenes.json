@@ -1,0 +1,38 @@
+{
+    "scene0": {
+        "title": "새 장면",
+        "priority": 0,
+        "weight": 1,
+        "repeatable": true,
+        "pages": {
+            "start": {
+                "summary": "",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "title": "",
+                        "text": ""
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

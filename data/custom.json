@@ -1,16 +1,39 @@
 {
-  "종족 선택": {
-    "description": "설명.",
-    "elements": [
-		{
-		"type": "button",
-		"title": "초록 슬라임",
-		"actionType": "toggle",
-		"events": [
-		  { "type": "setValue", "target":"tags", "operation":"add", "value":"초록슬라임" }
-		],
-		"width":25
-		}
-    ]
-  }
+    "species": {
+        "name": "category",
+        "description": "desc",
+        "required": 1,
+        "elements": [
+            {
+                "type": "button",
+                "actionType": "toggle",
+                "title": "title",
+                "text": "text",
+                "image": "",
+                "width": 25,
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "category"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "title",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "gold",
+                        "value": "2",
+                        "operation": "+"
+                    }
+                ]
+            }
+        ],
+        "maxSelect": 1
+    }
 }
