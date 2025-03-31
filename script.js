@@ -83,9 +83,11 @@ function loadData(key, defaultValue = null) {
     }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-    insertDevToggleButton();
-});
+if (detectInitialDevMode()) {
+    window.addEventListener("DOMContentLoaded", () => {
+        insertDevToggleButton();
+    });
+}
 
 
 const container = document.getElementById('game-container');
