@@ -2,8 +2,11 @@ let customData = {};
 let resources = {};
 let scene = [];
 let endings = {};
+let setting = {};
 let tags = [];
 let realTags = [];
+let items = [];
+let realItems = [];
 
 let phase = 'intro';
 
@@ -17,6 +20,72 @@ let currentLog = {
     choices: [],
     scene: [[]]
 }
+
+let DEV_MODE = false;
+
+function toggleDevMode() {
+    DEV_MODE = !DEV_MODE;
+    document.body.classList.toggle("dev-mode", DEV_MODE);
+    document.getElementById("dev-toggle").textContent = DEV_MODE ? "🛠 Dev ON" : "🚫 Dev OFF";
+    console.log("개발자 모드:", DEV_MODE);
+
+    updateValues();
+    updateStatusBar();
+}
+
+function insertDevToggleButton() {
+    const btn = document.createElement("button");
+    btn.id = "dev-toggle";
+    btn.textContent = "🚫 Dev OFF";
+    btn.onclick = toggleDevMode;
+    btn.style.cssText = `
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 9999;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    `;
+    document.body.appendChild(btn);
+}
+
+function detectInitialDevMode() {
+    const host = location.hostname;
+    return (
+        host === "localhost" ||
+        host === "127.0.0.1" ||
+        host === "0.0.0.0" ||
+        host === "" ||
+        location.protocol === "file:"
+    );
+}
+
+function saveData(key, value) {
+    try {
+        localStorage.setItem('DD_' + key, JSON.stringify(value));
+    } catch (e) {
+        console.error('로컬스토리지 저장 실패:', e);
+    }
+}
+
+function loadData(key, defaultValue = null) {
+    try {
+        const stored = localStorage.getItem('DD_' + key);
+        return stored ? JSON.parse(stored) : defaultValue;
+    } catch (e) {
+        console.error('로컬스토리지 불러오기 실패:', e);
+        return defaultValue;
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    insertDevToggleButton();
+});
 
 
 const container = document.getElementById('game-container');
@@ -32,6 +101,7 @@ async function startGame() {
     resources = await loadJSON('./data/resource.json');
     scene = await loadJSON('./data/scenes.json');
     endings = await loadJSON('./data/endings.json');
+    setting = await loadJSON('./data/setting.json');
     addElements(intro);
 }
 
@@ -72,10 +142,10 @@ function createFlexLine() {
 }
 
 function formatText(text) {
-    const trimmed = text.trim();
-    const withLineBreaks = trimmed.replace(/\n/g, "<br>");
-    const withQuotes = withLineBreaks.replace(/(['"])([^'"“”]+?)\1/g, `<span class="quote">“$2”</span>`);
-    return withQuotes;
+    return text.trim()
+        .replace(/\n/g, "<br>")
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+        .replace(/(['"])([^'"“”]+?)\1/g, `<span class="quote">“$2”</span>`);
 }
 
 function getEffectColor(target, operation) {
@@ -103,23 +173,28 @@ function generateButtonEffects(events, { asElements = true } = {}) {
         const valStr = returnValue(ev.value);
         const op = ev.operation;
 
-        if ((ev.target === "tags" || ev.target === "태그") && ev.operation == 'add' && asElements) {
+        if ((ev.target === "tags") && ev.operation == 'add' && asElements) {
             tags.push(`${valStr.replace('_', ' ')}`);
         } else {
             const colorClass = getEffectColor(ev.target, ev.operation);
             const res = resources[ev.target];
             const name = res?.name ?? ev.target;
             const val = returnValue(ev.value);
+            const count = returnValue(ev.count ?? 1);
             let line = "";
 
+            if (ev.conditionText) {
+                line += `${ev.conditionText} `.replace(/</g, '《 ').replace(/>/g, ' 》');
+            }
+
             switch (ev.operation) {
-            case '+': line = `${name} +${val}`; break;
-            case '-': line = `${name} -${val}`; break;
-            case '*': line = `${name} ${val}배로`; break;
-            case '/': line = `${name} ${val}로 나눔`; break;
-            case '=': line = `${name}을(를) ${val}으로 설정`; break;
-            case 'add': line = `${name}을(를) 얻음`; break;
-            case 'remove': line = `${name}을(를) 잃음`; break;
+            case '+': line += `${name} +${val}`; break;
+            case '-': line += `${name} -${val}`; break;
+            case '*': line += `${name} ${val}배로`; break;
+            case '/': line += `${name} ${val}로 나눔`; break;
+            case '=': line += `${name}을(를) ${typeof valStr === 'boolean'?(valStr?"얻음":"잃음"):`${val}으로 만듦`}`; break;
+            case 'add': line += `${val}을(를) ${ev.target == 'items'?count+"개 ":""}얻음`; break;
+            case 'remove': line += `${val}을(를) ${ev.target == 'items'?(count == 0?"전부":count+"개 "):""}잃음`; break;
             }
 
             if (asElements) {
@@ -171,7 +246,7 @@ function createButton(item, type = 'button', parentId = null) {
     const eventList = item.events ?? [];
     const { tagsLines, effectLines } = generateButtonEffects(eventList);
 
-    if (tagsLines.length > 0 || effectLines.length > 0) {
+    if (tagsLines.length > 0 || item.conditionText || effectLines.length > 0) {
         const desc = document.createElement('div');
         desc.className = 'button-effect-desc';
 
@@ -181,17 +256,24 @@ function createButton(item, type = 'button', parentId = null) {
             desc.appendChild(tagLine);
         }
 
+        if (item.conditionText) {
+            const condLine = document.createElement('div');
+            condLine.textContent = item.conditionText.replace(/</g, '《 ').replace(/>/g, ' 》');
+            condLine.classList.add("value-neutral");
+            desc.appendChild(condLine);
+        }
+
         for (let line of effectLines) {
             desc.appendChild(line);
         }
 
         btn.appendChild(desc);
+    }
 
-        if (item.text) {
-            const hr = document.createElement('hr');
-            hr.className = 'text-line';
-            btn.appendChild(hr);
-        }
+    if (item.title && item.text) {
+        const hr = document.createElement('hr');
+        hr.className = 'text-line';
+        btn.appendChild(hr);
     }
 
     if (item.text) {
@@ -336,16 +418,22 @@ function createElementItem(item, category = null) {
     return wrapper;
 }
 
-function executeEvents(events) {
+function executeEvents(events, log = true) {
     for (const e of events) {
         if (e.type === 'cyoaStart') {
+            if (!isBgmPlaying) {
+                if (loadData('bgm', true)) {
+                    toggleBGM();
+                }
+            }
             startCustomization();
         }
         if (e.type === 'eventStart') {
             startEvent();
         }
         if (e.type === 'setValue') {
-            handleSetValue(e, 'realValue')
+            handleSetValue(e, 'realValue', log);
+            updateValues();
         }
         if (e.type === 'viewSummary') {
             showSummary();
@@ -459,8 +547,8 @@ function newEvent() {
         return ev.condition === undefined || returnValue(ev.condition);
     });
 
-    if (candidates.length === 0) {
-        console.warn('이벤트 후보 없음');
+    if ((setting.maxRound != 0 && eventCount > setting.maxRound) || candidates.length === 0) {
+        startEnding();
         return;
     }
 
@@ -478,6 +566,10 @@ function newEvent() {
     }
 
     if (!currentEvent) currentEvent = topCandidates[0]; // fallback
+
+    if (currentEvent.repeatable === false) {
+        currentEvent._completed = true;
+    }
 
     const startIndex = currentEvent.start ?? 'start';
     const page = currentEvent.pages[startIndex];
@@ -518,6 +610,7 @@ function handleBranchTo(branches) {
     const valid = branches.filter(b => !b.condition || returnValue(b.condition));
 
     if (valid.length === 0) {
+        executeEvents(setting.events, false);
         addEventLog();
         newEvent();
         return;
@@ -556,6 +649,7 @@ function handleBranchTo(branches) {
         break;
     case "next":
     default:
+        executeEvents(setting.events, false);
         addEventLog();
         newEvent();
         break;
@@ -567,9 +661,9 @@ function startEnding(endingId = null) {
     let selected = null;
 
     if (endingId) {
-        selected = endings.find(e => e.id === endingId);
+        selected = endings[endingId];
     } else {
-        const candidates = endings.filter(e => !e.condition || returnValue(e.condition));
+        const candidates = Object.values(endings).filter(e => !e.condition || returnValue(e.condition));
 
         if (candidates.length === 0) {
             console.warn("조건을 만족하는 엔딩이 없습니다.");
@@ -587,7 +681,7 @@ function startEnding(endingId = null) {
         return;
     }
 
-    console.log(`🎬 엔딩 진입: ${selected.id}`);
+    console.log(`🎬 엔딩 진입: ${selected.title}`);
 
 
     const spacer = {
@@ -643,8 +737,8 @@ function returnValue(expr) {
 
 function tokenize(expr) {
     expr = String(expr);
-const pattern = /(==|!=|>=|<=|<<|>>|\|\||&&|\^\^|[+\-*/%()<>]|\d+\.?\d*|".*?"|[가-힣\w]+)/g;
-    return [...expr.matchAll(pattern)].map(m => m[0].replace(/\s/g, ''));
+    const pattern = /(==|!=|>=|<=|<<|>>|\|\||&&|\^\^|[+\-*/%()<>]|\d+\.?\d*|".*?"|[가-힣\w]+)/g;
+    return [...expr.matchAll(pattern)].map(m => m[0]);
 }
 
 
@@ -656,14 +750,15 @@ function replaceTokens(tokens) {
 
         if (['(', ')'].includes(tok)) return tok;
 
-        if (tok === 'tags' || tok === '태그') return tags;
-
+        if (tok === 'tags') return tags;
+        if (tok === 'items') return items;
+        if (tok === 'random') return Math.random();
         if (tok === 'required') {
             return isAllRequirementsMet();
         }
 
         const resource = Object.entries(resources).find(([id, val]) =>
-            id === tok || val.name === tok
+            id === tok
             );
         if (resource) return resource[1].value;
 
@@ -771,19 +866,19 @@ function applyOperator(a, b, op) {
     }
 }
 
-function handleSetValue(event, field = 'value') {
-    const { target, operation, value } = event;
+function handleSetValue(event, field = 'value', log = true) {
+    const { target, operation, value, count } = event;
     const evaluated = returnValue(value);
 
     if (event.condition === undefined || returnValue(event.condition)) {
-        if (field == 'realValue' && phase == 'event') {
+        if (field == 'realValue' && phase == 'event' && log) {
             currentLog.scene[currentLog.scene.length - 1].push(event);
         }
     } else {
         return;
     }
 
-    if (target === 'tags' || target === '태그') {
+    if (target === 'tags') {
         let tagList = (field === 'realValue') ? realTags : tags;
 
         if (operation === 'add') {
@@ -797,6 +892,31 @@ function handleSetValue(event, field = 'value') {
 
         return;
     }
+    if (target === 'items') {
+        let itemList = (field === 'realValue') ? realItems : items;
+        let _count = count ?? 1;
+
+        if (operation === 'add') {
+            for (let i=0; i<_count; i++) {
+                itemList.push(evaluated.value ?? evaluated);
+            }
+        } else if (operation === 'remove') {
+            const value = evaluated.value ?? evaluated;
+            for (let i=0; i<_count; i++) {
+                const idx = itemList.indexOf(value);
+                if (idx != -1) {
+                    itemList.splice(idx, 1);
+                } else {
+                    break;
+                }
+            }
+        }
+
+        if (field === 'realValue') realItems = itemList;
+        else items = itemList;
+
+        return;
+    }
 
     const res = resources[target];
     if (!res || !(field in res)) {
@@ -807,19 +927,19 @@ function handleSetValue(event, field = 'value') {
     const current = res[field];
     switch (operation) {
     case '=':
-        res[field] = Math.floor(evaluated);
+        res[field] = evaluated;
         break;
     case '+':
-        res[field] = Math.floor(current + evaluated);
+        res[field] = current + evaluated;
         break;
     case '-':
-        res[field] = Math.floor(current - evaluated);
+        res[field] = current - evaluated;
         break;
     case '*':
-        res[field] = Math.floor(current * evaluated);
+        res[field] = current * evaluated;
         break;
     case '/':
-        res[field] = Math.floor(current / evaluated);
+        res[field] = current / evaluated;
         break;
     default:
         console.warn(`알 수 없는 연산: ${operation}`);
@@ -842,6 +962,7 @@ function updateValues() {
     }
 
     tags = [...realTags];
+    items = [...realItems];
 
     for (const ev of activeToggles) {
         if (ev.type == "setValue") {
@@ -867,7 +988,12 @@ function updateValues() {
         const result = returnValue(condition);
 
         if (hidden && !result) {
-            btn.classList.add('hidden');
+            if (!DEV_MODE) {
+                btn.classList.add('hidden');
+            } else {
+                btn.classList.remove('hidden');
+                btn.lockReasons.add('devMode');
+            }
 
             if (btn.dataset.active === "true") {
                 btn.dataset.active = "false";
@@ -881,6 +1007,7 @@ function updateValues() {
 
         if (hidden && result) {
             btn.classList.remove('hidden');
+            btn.lockReasons.delete('devMode');
         }
 
         if (btn.dataset.active === "true") continue;
@@ -974,21 +1101,55 @@ function updateStatusBar() {
 
     for (const key in resources) {
         const res = resources[key];
-        if (!res.show) continue;
+        if ((!res.show || (res.showIfPositive && !returnValue(res.value))) && !DEV_MODE) continue;
 
         const el = document.createElement('div');
         el.className = 'status-box';
-        el.textContent = `${res.name}: ${res.value}${res.maxValue ? `/${returnValue(res.maxValue)}` : ``}`;
+        el.textContent = `${res.name}` + (!DEV_MODE && typeof returnValue(res.value) === 'boolean' ? "" : `: ${res.value}${res.maxValue ? `/${returnValue(res.maxValue)}` : ``}`);
+
+        if (res.description) {
+            el.title = res.description;
+        }
+
+        if ((!res.show || (res.showIfPositive && !returnValue(res.value))) && DEV_MODE) {
+            el.disabled = true;
+            el.classList.add("disabled");
+        }
+
         bar.appendChild(el);
+    }
+
+    if (Array.isArray(items) && items.length > 0) {
+        const countMap = {};
+        for (const item of items) {
+            countMap[item] = (countMap[item] || 0) + 1;
+        }
+
+        for (const name in countMap) {
+            const el = document.createElement('div');
+            el.className = 'item-box';
+            el.textContent = `${name} × ${countMap[name]}`;
+            bar.appendChild(el);
+        }
     }
 }
 
 function fixValue(targetKey = null) {
-    if (targetKey === 'tags' || targetKey === '태그') {
+    if (targetKey === 'tags') {
         realTags = [...tags];
 
         activeToggles = activeToggles.filter(ev => {
-            return !(ev.type === "setValue" && (ev.target === "tags" || ev.target === "태그"));
+            return !(ev.type === "setValue" && (ev.target === "tags"));
+        });
+
+        updateValues();
+        return;
+    }
+    if (targetKey === 'items') {
+        realItems = [...items];
+
+        activeToggles = activeToggles.filter(ev => {
+            return !(ev.type === "setValue" && (ev.target === "items"));
         });
 
         updateValues();
@@ -1002,6 +1163,7 @@ function fixValue(targetKey = null) {
             fixValue(key);
         }
         fixValue("tags");
+        fixValue("items");
         return;
     } else if (!res) {
         console.warn(`존재하지 않는 자원: ${targetKey}`);
@@ -1075,7 +1237,7 @@ function showSummary() {
 
     const customBox = document.createElement('div');
     customBox.className = 'info-box summary-part custom-summary';
-    customBox.innerHTML = '<h2 style="width: 100%">당신의 슬라임 딸</h2>';
+    customBox.innerHTML = '<h2 style="width: 100%">시작 상태</h2>';
     for (const category in chosenCustoms) {
         chosenCustoms[category].forEach(btn => {
             const clone = btn.cloneNode(true);
@@ -1119,7 +1281,7 @@ function showSummary() {
           group.appendChild(choiceLine);
         }
 
-        const { tagsLines, effectLines } = generateButtonEffects(e.events[i], { asElements: false });
+        const { tagsLines, effectLines } = generateButtonEffects(e.scene[i], { asElements: false });
         for (const fx of effectLines) {
             const fxLine = document.createElement('div');
             fxLine.textContent = fx.line;
@@ -1171,6 +1333,5 @@ async function downloadElementAsImage(element, filename, callback) {
         callback();
     }
 }
-
 
 window.onload = startGame;

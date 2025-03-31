@@ -1,10 +1,158 @@
 {
-    "gold": {
-        "name": "소지금",
-        "realValue": 100,
+    "day": {
+        "name": "일차",
+        "description": "이 던전 안에서 지낸지 얼마나 지났지...",
+        "realValue": 1,
         "show": true,
+        "showIfPositive": false,
+        "positive": false,
+        "summary": true,
+        "value": 1
+    },
+    "hp": {
+        "name": "체력",
+        "description": "당신의 체력. 0이 되면 사망한다.",
+        "realValue": 5,
+        "show": true,
+        "showIfPositive": false,
         "positive": true,
         "summary": true,
-        "value": 100
+        "maxValue": "maxHp",
+        "value": 5
+    },
+    "maxHp": {
+        "name": "최대 체력",
+        "description": "",
+        "realValue": 10,
+        "show": false,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": false,
+        "value": 10
+    },
+    "mental": {
+        "name": "정신",
+        "description": "당신의 정신. 0이 되면 미쳐버린다.",
+        "realValue": 5,
+        "show": true,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": true,
+        "maxValue": "maxMental",
+        "value": 5
+    },
+    "maxMental": {
+        "name": "최대 정신",
+        "description": "",
+        "realValue": 10,
+        "show": false,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": false,
+        "value": 10
+    },
+    "food": {
+        "name": "식량",
+        "description": "당신이 가진 식량. 매일 소모되며, 부족하면 굶주려 아사한다.",
+        "realValue": 5,
+        "show": true,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": true,
+        "maxValue": "maxFood",
+        "value": 5
+    },
+    "maxFood": {
+        "name": "최대 식량",
+        "description": "",
+        "realValue": 10,
+        "show": false,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": false,
+        "value": 10
+    },
+    "danger": {
+        "name": "위험도",
+        "description": "발생할 이벤트들의 위험한 단계를 나타내는 값. 표시되지 않고 내부적으로 변동됨.",
+        "realValue": 0,
+        "show": false,
+        "showIfPositive": false,
+        "positive": false,
+        "summary": false,
+        "value": 0
+    },
+    "randvar1": {
+        "name": "랜덤변수 1",
+        "description": "랜덤 효과를 위해 사용되는 변수",
+        "realValue": 0,
+        "show": false,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": false,
+        "value": 0
+    },
+    "randvar2": {
+        "name": "랜덤변수 2",
+        "description": "랜덤 효과를 위해 사용되는 변수",
+        "realValue": 0,
+        "show": false,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": false,
+        "value": 0
+    },
+    "randvar3": {
+        "name": "랜덤변수 3",
+        "description": "랜덤 효과를 위해 사용되는 변수",
+        "realValue": 0,
+        "show": false,
+        "showIfPositive": false,
+        "positive": true,
+        "summary": false,
+        "value": 0
+    },
+    "poison": {
+        "name": "중독",
+        "description": "당신은 중독되었다. 지속시간 동안 계속해서 체력이 감소한다.",
+        "realValue": 0,
+        "show": true,
+        "showIfPositive": true,
+        "positive": false,
+        "summary": false,
+        "minValue": 0,
+        "value": 0
+    },
+    "bleeding": {
+        "name": "출혈",
+        "description": "당신은 출혈 상태다. 지속시간 동안 계속해서 체력이 감소한다.",
+        "realValue": 0,
+        "show": true,
+        "showIfPositive": true,
+        "positive": false,
+        "summary": false,
+        "minValue": 0,
+        "value": 0
+    },
+    "fracture": {
+        "name": "골절",
+        "description": "당신은 뼈가 부러진 상태. 몇몇 행동에 제약이 생긴다.",
+        "realValue": "false",
+        "show": true,
+        "showIfPositive": true,
+        "positive": false,
+        "summary": false,
+        "value": "false"
+    },
+    "scare": {
+        "name": "공황",
+        "description": "당신은 공황 상태에 빠졌다. 지속시간 동안 계속해서 정신이 감소한다.",
+        "realValue": 0,
+        "show": true,
+        "showIfPositive": true,
+        "positive": false,
+        "summary": false,
+        "minValue": 0,
+        "value": 0
     }
 }

@@ -1,17 +1,16 @@
 {
-    "scene0": {
-        "title": "새 장면",
-        "priority": 0,
+    "dead_fatal": {
+        "title": "바닥난 체력",
+        "priority": 100,
         "weight": 1,
-        "repeatable": true,
+        "repeatable": false,
         "pages": {
             "start": {
-                "summary": "",
+                "summary": "체력이 다해 쓰러지고 말았다.",
                 "elements": [
                     {
                         "type": "textbox",
-                        "title": "",
-                        "text": ""
+                        "text": "다리가 풀린다.\n\n숨을 들이쉴 때마다 갈비뼈 아래가 쑤신다.\n숨이, 너무 무겁다.\n\n한 발 더 떼려 했지만, 몸이 말을 듣지 않는다.\n피로가, 통증이, 피가 빠져나간 자리처럼\n점점 감각을 마비시킨다.\n\n배낭이 바닥에 떨어지고, 시야가 기울어지고,\n무릎이 먼저 접힌다.\n\n바닥은 차갑다.\n조금만, 잠깐만 눈을 감을 생각이었다.\n\n...그러나 다시 뜨지는 못했다."
                     },
                     {
                         "type": "choice",
@@ -19,6 +18,1629 @@
                             {
                                 "type": "button",
                                 "title": "계속",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "ending",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "gameover_hp"
+                                    }
+                                ],
+                                "text": "",
+                                "image": "",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "condition": "hp <= 0"
+    },
+    "dead_crazy": {
+        "title": "바닥난 정신력",
+        "priority": 100,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "정신이 무너져 미쳐버리고 말았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "어디선가 웃음소리가 들린다.\n\n기분 나쁜 웃음이다.\n낮지도, 높지도 않은 애매한 목소리.\n사람의 것인지조차 알 수 없다.\n\n그 소리가 너무나도 짜증나서,\n필사적으로 소리가 나는 곳을 찾는다.\n\n어디지. 없어.\n없어. 없어.\n어디지?\n\n끝내 발견한다.\n눈 앞에 보이는 것은,\n수면에 비친 웃고 있는 자신의 얼굴.\n\n아, 그런가.\n웃고 있는 것은\n당신이었다..."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "ending",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "gameover_mental"
+                                    }
+                                ],
+                                "text": "",
+                                "image": "",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "condition": "mental <= 0"
+    },
+    "dead_hunger": {
+        "title": "바닥난 식량",
+        "priority": 100,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "식량이 바닥나 굶주리고 말았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "배가 고프다.\n\n몇 번이고 물통을 들여다보고,\n비어 있는 주머니를 뒤적였다.\n\n처음엔 어지러웠고,\n그다음엔 배가 뒤틀렸고,\n지금은… 아무것도 느껴지지 않는다.\n\n몸이 무겁다.\n머리가 텅 비어 있는 것 같다.\n생각이 흐릿하다.\n눈을 깜빡이는 것도 귀찮다.\n\n한 걸음.\n또 한 걸음.\n\n더 이상 나아가지 않는다.\n앞에 벽이 있는 것도 아닌데.\n\n그 자리에 주저앉는다.\n차갑지도, 아프지도 않다.\n그저 모든 게 멀어진다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "ending",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "gameover_food"
+                                    }
+                                ],
+                                "text": "",
+                                "image": "",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "condition": "food <= 0"
+    },
+    "resource0_1": {
+        "title": "눈 붙이기 좋은 곳",
+        "priority": 1,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "안전해보이는 장소를 발견했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "바람이 잦아들고, 싸늘한 공기가 잠시 숨을 고른다.\n좁은 암벽 틈을 더듬어 지나던 당신은, 문득 한쪽 벽면에 기이할 정도로 고요한 공간을 발견한다.\n그곳은 암반이 움푹 꺼진 그늘진 자리였다. 사람 두셋쯤은 누울 수 있을 만큼 평평한 지면이 조용히 펼쳐져 있다.\n\n바닥은 건조하고, 오래 방치된 흔적처럼 먼지만 살짝 내려앉아 있다.\n양옆은 단단한 암석이 감싸고 있어 바람의 통로에서 벗어나 있으며, 천장의 기울어진 구조가 위에서 떨어질 위험을 줄여준다.\n희미한 빛줄기가 천공을 따라 스며들어, 공기 속의 먼지를 부드럽게 비춘다.\n\n위험한 기척은 느껴지지 않는다.\n숨을 죽인 침묵은 오히려 평온하게 느껴질 정도다.\n지친 몸을 잠시 눕히기엔, 이만한 안식처도 없으리라.\n\n지금이라면 잠깐 눈을 붙여도 괜찮을 것 같다.\n여긴 충분히 안전해 보인다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "잠시 눈을 붙인다.",
+                                "width": 33,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "hp",
+                                        "value": "2",
+                                        "operation": "+"
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "mental",
+                                        "value": "2",
+                                        "operation": "+"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_1"
+                                    }
+                                ],
+                                "text": "언제 안전하게 쉴 수 있을지 모른다.\n이 기회를 놓치지 말아야 한다.",
+                                "image": "",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "hp",
+                                        "value": "maxHp",
+                                        "operation": "="
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "mental",
+                                        "value": "maxMental",
+                                        "operation": "="
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_2"
+                                    }
+                                ],
+                                "title": "간이 휴식처를 만든다.",
+                                "text": "기왕 쉰다면 안락한 환경을 만들도록 하자.\n마침 그럴만한 짐도 가지고 있다.",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once",
+                                "condition": "items << \"야영 물자\"",
+                                "conditionText": "[야영 물자] 소지"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_3"
+                                    }
+                                ],
+                                "title": "지나친다.",
+                                "text": "휴식의 유혹은 달콤해보이지만 당신에게는 그럴 여유가 없다.\n이곳이 정말 안전할 거라는 보장도 없다.\n\n이럴 시간에 조금이라도 더 이동해야만 한다.",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_1": {
+                "summary": "충분히 휴식을 취했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "바닥은 거칠었지만, 고요함은 오랜만에 찾아온 평화를 닮아 있었다.\n몸을 웅크린 채 잠에 들자, 꿈도 없는 어둠이 당신을 덮었다.\n시간이 얼마나 흘렀을까.\n천천히 눈을 뜨면, 감긴 근육이 풀어지고, 가슴 깊숙한 숨이 맑게 내려앉는다.\n\n피로가 가셨다.\n정신도 맑아졌다.\n이 짧은 휴식이, 다시 걷게 해주는 힘이 되어줄 것이다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "계속",
+                                "text": "",
+                                "width": 80,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_2": {
+                "summary": "훌륭한 휴식을 취했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 배낭을 내려두고, 손에 익은 천 조각과 버려진 바위를 엮어 간이 휴식처를 꾸민다.\n불빛은 없지만, 벽에 반사된 희미한 빛이 은은하게 공간을 감싼다.\n그 안에 몸을 웅크리고 앉자, 기온은 천천히 따뜻해지고, 긴장이 느슨해진다.\n\n작은 안식이 이렇게 큰 위안을 줄 줄이야.\n휴식은 잠보다 깊었다.\n당신은 단단히 쉰 기분으로 몸을 일으킨다.\n\n지금이라면, 조금 더 멀리 나아갈 수 있을 것 같다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "계속",
+                                "text": "",
+                                "width": 80,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_3": {
+                "summary": "그냥 지나쳤다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 고개를 한 번 돌려 그 공간을 바라본다.\n평온하고 조용하다. 하지만 어딘가 너무 조용하다.\n그 불확실함이 마음에 걸렸다.\n\n당신은 발을 떼었다.\n아무 일도 없었다.\n그저 어두운 길이 다시 앞에 놓일 뿐이다.\n\n하지만 어쩐지, 조금 더 피로가 쌓인 기분이다.\n다음 기회엔 쉬는 것도 고려해봐야 할 것이다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "계속",
+                                "text": "",
+                                "width": 80,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "resource0_2": {
+        "title": "버섯 채취",
+        "priority": 1,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "야생 버섯의 군락지를 발견했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "길은 축축하게 젖어 있었고, 바위 벽면엔 이끼가 얇게 번져 있었다.\n그 틈, 흙이 조금 드러난 완만한 경사면에 다다랐을 때\n당신의 눈에 작은 버섯 무리들이 들어왔다.\n\n코끝을 간질이는 흙냄새와 약한 곰팡이 향이 감돌며\n버섯의 표면엔 물방울이 조심스레 맺혀 있다.\n눈에 익은 종류는 아니지만, 독버섯이라는 확신도 없다.\n\n지금 이걸 먹는다면 허기를 달랠 수 있을지도 모른다.\n하지만, 신중하게 판단하지 않으면 위험할 수도 있다.\n\n당신은 잠시 주저한다.\n이 야생의 버섯, 입에 넣어도 괜찮을까?"
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "버섯을 먹는다.",
+                                "width": 33,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "food",
+                                        "value": "3",
+                                        "operation": "+"
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "randvar1",
+                                        "value": "random * 2",
+                                        "operation": "=",
+                                        "hidden": true
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "poison",
+                                        "value": "5",
+                                        "operation": "+",
+                                        "condition": "randvar1 == 1",
+                                        "conditionText": "50% 확률로"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "condition": "randvar1 == 0",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_1"
+                                    },
+                                    {
+                                        "type": "page",
+                                        "condition": "randvar1 == 1",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_2"
+                                    }
+                                ],
+                                "text": "보기에는 먹을 수 있는 버섯처럼 보인다.\n\n허기를 축이는데 좋은 선택이 될 것이다.",
+                                "image": "",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "food",
+                                        "value": "3",
+                                        "operation": "+"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_3"
+                                    }
+                                ],
+                                "title": "버섯을 관찰한다.",
+                                "text": "이 버섯이 먹어도 되는 것인지 충분히 확인해보고 먹는 것이 좋겠다.\n\n마침 당신은 버섯에 대한 지식을 가지고 있다.",
+                                "width": 33,
+                                "image": "",
+                                "conditionText": "<식생학> 필요",
+                                "condition": "tags << 식생학",
+                                "type": "button",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_4"
+                                    }
+                                ],
+                                "title": "지나친다.",
+                                "text": "모르는 버섯을 먹는다?\n\n그런 위험한 선택은 할 수 없다.",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_1": {
+                "summary": "무턱대고 버섯을 먹어봤지만, 다행히도 무사했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "식량이 부족해 아사하는 것보다는\n뭐라도 먹어보는 쪽이 낫지 않겠는가?\n\n당신은 급한대로 안전해보이는 버섯을 따 입에 우겨넣었다.\n퍼석한 식감과 고소한 향이 느껴진다.\n\n다행히도 몸에는 아무런 이상이 없었다.\n운이 좋았다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "계속",
+                                "text": "",
+                                "width": 80,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_2": {
+                "summary": "버섯에는 독이 있었다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "식량이 부족해 아사하는 것보다는\n뭐라도 먹어보는 쪽이 낫지 않겠는가?\n\n당신은 급한대로 버섯을 따 입에 우겨넣었다.\n퍼석한 식감과 알싸한 향이 느껴진다.\n\n얼마 지나지 않아, 그것이 잘못된 선택임을 느꼈다.\n어지럼증과 복통이 당신의 몸을 덮쳤다.\n\n모르는 버섯을 먹는게 아니었는데..."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "계속",
+                                "text": "",
+                                "width": 80,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_3": {
+                "summary": "버섯들을 구분하여 안전하게 식용 버섯만 섭취했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 꼼꼼하게 자라나 있는 버섯들을 살펴보았다.\n그 결과 이곳에 있는 버섯은 비슷해보이지만 두 종류가 섞여있음을 발견할 수 있었다.\n\n식용으로써 전혀 문제가 없는 요정송이버섯과,\n섭취 시 치명적인 복통과 어지럼증을 유발하는 악마송이버섯.\n\n이를 구분할 수 있는 지식을 가져서 망정이지,\n무턱대고 먹었다가는 큰일날 뻔 했다.\n\n버섯들 중 요정송이버섯만을 구분해 든든하게 배를 채울 수 있었다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "계속",
+                                "text": "",
+                                "width": 80,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_4": {
+                "summary": "무시하고 지나쳤다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "모르는 버섯은 절대 섭취하지 말것.\n아주 기본적인 서바이벌 상식이다.\n\n독이 있는 버섯과 식용 버섯의 구분은 아마추어가 할 수 있는 영역이 아니다.\n괜히 눈 앞의 식량에 눈이 멀어 목숨을 내다버리는 짓은 하지 않는 것이 현명하다.\n\n당신은 더 이상 버섯들에 눈길을 주지 않고 가던 길을 마저 가기로 했다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "계속",
+                                "text": "",
+                                "width": 80,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "resource0_3": {
+        "title": "누군가의 시체",
+        "priority": 1,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "바위의 틈 사이에서 누군가의 백골 시체를 발견했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "앞을 가로막는 바위 틈을 돌아 나가자, 공기 속에 희미한 썩은 냄새가 스며든다.\n그 냄새를 따라 시선을 돌린 당신은, 벽 쪽에 무언가가 기대어 있는 것을 발견한다.\n\n가까이 다가가자, 그것은 금세 형태를 드러낸다.\n먼지와 거미줄에 덮인, 바싹 마른 사람의 백골.\n무릎을 끌어안듯 웅크린 자세. 손가락뼈는 벽을 긁은 듯, 희미한 자국이 남아 있다.\n\n옷감의 잔해는 이미 썩어 문드러졌지만, 허리춤에 남은 가죽끈, 녹슨 장검, 금속 단추 몇 개가 그의 과거를 말해주는 듯하다.\n오래 전, 이곳에 갇혀 생을 마감한 다른 모험가인가..."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "짐을 뒤져본다.",
+                                "width": 33,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "items",
+                                        "value": "회복약",
+                                        "operation": "add",
+                                        "count": 1
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "mental",
+                                        "value": "2",
+                                        "operation": "-",
+                                        "condition": "(tags << 냉철함) != true",
+                                        "conditionText": "<냉철함>이 없다면"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_1"
+                                    }
+                                ],
+                                "text": "그도 모험가라면 쓸만한 물건을 지니고 있었을지도 모른다.\n\n살 사람은 살아야지 않겠는가?",
+                                "image": "",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_2"
+                                    }
+                                ],
+                                "title": "손에 쥔 것을 본다.",
+                                "text": "시체가 손에 무언가 종잇조각을 쥐고 있는 것을 발견했다.\n\n죽어가면서도 이렇게 쥐고 있던 것을 보면 굉장히 중요한 것이 아니었을까?",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "mental",
+                                        "value": "1",
+                                        "operation": "+"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_3"
+                                    }
+                                ],
+                                "title": "명복을 빌어준다.",
+                                "text": "어쩌면 당신의 운명이었을지도 모를 일을 겪었던 불쌍한 영혼에게 명복을 빌어주자.\n\n적어도 당신의 마음은 조금 편해질 것이다.",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_1": {
+                "summary": "시체의 품 속을 뒤져 쓸만한 물건을 얻었다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "손이 멈칫거렸다.\n하지만 망설임도 잠시, 당신은 무릎을 꿇고 시체의 옷자락을 조심스레 들춰본다.\n바스라지는 천과 마른 뼈 사이에서 작은 유리병 하나가 손에 걸린다.\n붉은 액체가 일렁이는 회복약. 오래된 것처럼 보이지만, 아직 쓸만하다.\n\n그의 것이었다는 사실은 마음을 무겁게 했지만, 지금은 생존이 먼저다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_2": {
+                "summary": "\"왼쪽, 가운데, 가운데\"라고 적힌 쪽지를 발견했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 백골의 손에 쥔 물건을 조심스레 펼쳐본다.\n종이였다. 축축하고 가장자리가 너덜거렸지만, 글씨는 여전히 읽을 수 있었다.\n\n\"왼쪽, 가운데, 가운데.\"\n\n짧고 무뚝뚝한 문장.\n비밀이라도 남기려 했던 걸까, 혹은 마지막 순간에 겨우 남긴 흔적일까.\n\n어쩐지 그 말이 마음에 걸린다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_3": {
+                "summary": "그를 위해 고개를 숙여주었다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 조용히 머리를 숙인다.\n말은 하지 않았다. 다만, 묵묵히 그를 기억하려 했다.\n누구였는지, 어떤 이유로 여기까지 왔는지는 알 수 없지만\n적어도 이 죽음을 무의미하게 흘려보내고 싶진 않았다.\n\n잠시, 주변 공기가 가볍게 가라앉는 듯한 감각이 스쳐 지나간다.\n그뿐이었다. 하지만 그것만으로도 충분했다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "device0_1": {
+        "title": "세 개의 버튼",
+        "priority": 1,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "세 개의 버튼이 있는 장치를 발견했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "통로는 갑작스레 넓어졌고, 벽면은 인공적으로 다듬어진 흔적이 뚜렷했다.\n바닥엔 오래된 먼지가 두텁게 깔려 있었고, 천장에서 떨어진 석편들이 이따금 깔끔한 대칭을 어지럽히고 있었다.\n\n공간의 중심에는 낮은 단상이 있었고, 그 위에는 크기와 모양이 같은 금속제 버튼 세 개 나란히 서 있었다.\n왼쪽, 가운데, 오른쪽.\n어느 하나 특별해 보이지 않았으며, 어떤 표식도 남아 있지 않다.\n\n움직이지 않은 지 오래된 듯, 버튼 주변에는 녹이 살짝 피어 있었고, 사용자의 손에 맞게 깎여 있었다.\n무언가를 작동시키기 위한 장치라는 것은 분명하지만, 어떤 것이 옳은 선택인지 알 수 없다.\n\n지금 여기서 무언가를 잘못 건드리면, 어떤 일이 일어날지도 모른다.\n하지만 이곳에 남겨진 흔적은 분명히 무언가를 암시하고 있었다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "버튼을 눌러본다.",
+                                "width": 33,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_1"
+                                    }
+                                ],
+                                "text": "버튼을 눌러보면 뭐라도 나오지 않을까?",
+                                "image": "",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_4"
+                                    }
+                                ],
+                                "title": "장치의 구조를 파악한다.",
+                                "text": "장치를 살펴보니 그 구조를 얼추 알 것 같다.\n\n당신에겐 그럴만한 지식이 있었다.",
+                                "width": 33,
+                                "image": "",
+                                "conditionText": "<공학> 필요",
+                                "condition": "tags << 공학",
+                                "type": "button",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "title": "무시한다.",
+                                "text": "뭔지 모를 장치를 건드려봐서 좋을 건 없다.\n\n가던 길을 마저 가자.",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_1": {
+                "summary": "버튼을 하나 눌러보았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "어느 버튼을 눌러볼까?"
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "왼쪽 버튼",
+                                "actionType": "once",
+                                "width": 33,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_2"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_6"
+                                    }
+                                ],
+                                "title": "가운데 버튼",
+                                "text": "",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_6"
+                                    }
+                                ],
+                                "title": "오른쪽 버튼",
+                                "text": "",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_2": {
+                "summary": "버튼을 계속해서 눌러보았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "덜컥 거리는 소리가 났다.\n하지만 별다른 변화는 보이지 않았다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "왼쪽 버튼",
+                                "actionType": "once",
+                                "width": 33,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_6"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_3"
+                                    }
+                                ],
+                                "title": "가운데 버튼",
+                                "text": "",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_6"
+                                    }
+                                ],
+                                "title": "오른쪽 버튼",
+                                "text": "",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_3": {
+                "summary": "버튼을 계속해서 눌러보았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "무언가가 돌아가는 소리가 들린다.\n하지만 별다른 변화는 보이지 않았다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "왼쪽 버튼",
+                                "actionType": "once",
+                                "width": 33,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_6"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_5"
+                                    }
+                                ],
+                                "title": "가운데 버튼",
+                                "text": "",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_6"
+                                    }
+                                ],
+                                "title": "오른쪽 버튼",
+                                "text": "",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_4": {
+                "summary": "장치의 구조를 파악하고 올바른 순서로 버튼을 눌렀다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 세 개의 버튼을 바라보다가, 무의식적으로 바닥과 벽면, 버튼의 상태를 확인한다.\n모래가 흘러간 자국, 미세하게 다른 금속의 마모 상태, 버튼 사이의 간격.\n이건 분명한 의도를 가진 구조물이다.\n무게 분산과 작동 연결부의 구조를 짧은 시간 내에 해석한 당신은 확신을 가지고 손을 뻗는다.\n\n철컥. 철컥. 철컥.\n딱 맞게 맞물리는 감각.\n기계 장치가 천천히 반응하기 시작한다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_5"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_5": {
+                "summary": "장치를 작동시켜 숨겨진 보상을 얻었다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "마지막 버튼이 눌리는 순간, 무거운 금속이 맞물리는 소리와 함께\n공간 전체가 낮게 떨렸다.\n잠시 후, 단상 뒤쪽 벽이 부드럽게 미끄러지듯 열리며, 어둠 속에서 작은 방 하나가 드러난다.\n\n그 안에는 먼지에 덮인 목재 상자가 하나 놓여 있었다.\n뚜껑을 열자 오래된 천 안에 조심스레 감싸인 몇 개의 물건이 모습을 드러낸다.\n\n이건 확실히 누군가 중요한 목적을 위해 숨겨둔 보급품이다.\n조작을 이해하고 장치를 제대로 풀어낸 대가. 분명한 보상이었다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "items",
+                                        "value": "회복약",
+                                        "operation": "add",
+                                        "count": 1
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "items",
+                                        "value": "해독제",
+                                        "operation": "add"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_6": {
+                "summary": "함정을 작동시켜 부상을 입고 말았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "버튼을 누르는 순간, 미세한 철컥 소리와 함께\n방 안의 공기가 싸늘하게 변했다.\n어딘가에서 기계장치가 삐걱이며 돌아가는 소리.\n그리고 다음 순간, 바닥에서 솟아오른 바늘이 당신의 발밑을 꿰뚫는다.\n\n반사적으로 몸을 피했지만, 늦었다.\n살을 찌르는 고통이 느껴진다.\n\n비틀거리며 간신히 자세를 바로잡자, 버튼은 무력하게 제자리에 되돌아가 있었다.\n낯선 장치를 함부로 건드려선 안됐다.\n그리고 그 대가는 상처로 돌아왔다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "hp",
+                                        "value": "3",
+                                        "operation": "-"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "location0_1": {
+        "title": "높은 낭떠러지",
+        "priority": 1,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "계속 가려면 높은 곳을 내려가야 한다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "길은 끊겼다.\n앞은 낭떠러지처럼 급격히 꺼져 있었고, 아래쪽 바닥까지는 꽤나 높아 보였다.\n돌이 굴러 떨어져 몇 차례 튕긴 끝에 먼지를 일으키며 멈췄다.\n그 거리, 어림잡아 두 사람 키를 넘는다.\n\n돌아서 갈 길은 없다.\n벽면은 미끄럽고, 발 디딜 틈조차 없다.\n이쪽에서 저 아래로 뛰어내리는 것만이 유일한 방법처럼 보인다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "뛰어내린다.",
+                                "width": 50,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "hp",
+                                        "value": "2",
+                                        "operation": "-",
+                                        "condition": "(tags << 낙법) != true",
+                                        "conditionText": "<낙법>이 없다면"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "condition": "tags << 낙법",
+                                        "priority": 10,
+                                        "weight": 1,
+                                        "value": "page_2"
+                                    },
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_1"
+                                    }
+                                ],
+                                "text": "다른 방법은 없다.\n과감히 뛰어내린다.",
+                                "image": "",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "items",
+                                        "value": "밧줄",
+                                        "operation": "remove",
+                                        "count": 1
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_3"
+                                    }
+                                ],
+                                "title": "밧줄을 사용한다.",
+                                "text": "가지고 있는 밧줄을 사용해 안전하게 내려간다.",
+                                "width": 50,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once",
+                                "conditionText": "[밧줄] 소지",
+                                "condition": "items << 밧줄"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_1": {
+                "summary": "과감히 뛰어내렸지만 부상을 입고 말았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "숨을 삼킨 채 몸을 던졌다.\n공기가 순간적으로 귀를 때리고, 바닥이 눈앞으로 쏟아졌다.\n착지 직전, 중심이 무너졌다.\n발부터 내려앉은 충격이 그대로 다리에 전해졌고, 그 힘이 무릎을 꺾으며 허공에 넘어진다.\n\n둔탁한 소리와 함께 온몸이 땅에 구른다.\n숨이 턱 막히고, 왼쪽 다리에 날카로운 통증이 찔러든다.\n뼈는 부러지지 않았지만, 발목이 비틀렸다.\n일어서기는 가능하나, 통증이 움직임을 따라다닌다.\n\n돌아갈 수는 없다.\n이제는 절뚝거리며 앞으로 나아가야 한다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_2": {
+                "summary": "낙법을 통해 무사히 착지했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "몸을 던지며, 호흡을 조절한다.\n떨어지는 동안 지면의 구조와 착지 지점을 정확히 계산하고, 몸을 말아 중심을 낮춘다.\n\n철썩.\n발끝이 닿는 순간, 당신은 곧바로 몸을 굴려 충격을 분산시킨다.\n짧은 구르기 후 무릎을 짚고 멈춰선다.\n\n심장은 뛰고 있지만, 몸엔 이상이 없다.\n깔끔한 낙법.\n먼지 하나 튄 정도로, 당신은 무사히 착지했다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_3": {
+                "summary": "밧줄을 묶어 안전하게 내려왔다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 배낭을 열어, 단단한 밧줄과 걸쇠를 꺼낸다.\n근처 바위에 고정할 만한 틈을 찾고, 몇 차례의 매듭으로 밧줄을 단단히 고정한다.\n\n먼저 밧줄을 당겨 확인한 후, 조심스럽게 손과 발을 이용해 내려가기 시작한다.\n거친 암벽이 손바닥을 긁고, 아래는 여전히 어두컴컴하지만\n하나하나 지지하며 내려가는 동작은 안정적이고 조심스럽다.\n\n마침내 두 발이 바닥을 디뎠을 때, 등 위로 무게가 사라진 듯한 해방감이 스친다.\n무리 없이 착지 성공."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "monster0_1": {
+        "title": "거미줄이 쳐진 공간",
+        "priority": 1,
+        "weight": 1,
+        "repeatable": false,
+        "pages": {
+            "start": {
+                "summary": "거미줄이 쳐진 공간이 나타났다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "길은 넓어졌지만, 그만큼 기이해졌다.\n벽과 천장, 심지어 바닥까지 어딘가 어색하게 반들거리는 실이 엉켜 있다.\n가볍게 손을 대자, 미세하게 끈적한 감촉이 손끝을 잡아끈다.\n\n빛이 드문 공간이기에 이 실은 잘 보이지 않는다.\n벽면에는 희미한 발자국과 찢긴 천 조각,\n그리고 사람 손보다 큰 곤충의 껍질이 말라붙은 채 매달려 있다.\n\n무언가, 이곳에 있다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "서둘러 지나간다.",
+                                "width": 50,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_2"
+                                    }
+                                ],
+                                "text": "쎄한 분위기가 느껴져 서둘러 이곳을 빠져나가야겠다고 생각했다.\n\n당신은 서둘러 이곳을 돌파해 달려간다.",
+                                "image": "",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_1"
+                                    }
+                                ],
+                                "title": "거미줄을 피해 지나간다.",
+                                "text": "자칫 잘 보이지 않는 거미줄에 걸렸다간 큰 일을 겪을 것이다.\n\n당신은 예리한 눈썰미로 천천히 거미줄의 위치를 파악하며 빈 공간으로 조심스럽게 지나간다.",
+                                "width": 50,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once",
+                                "conditionText": "<눈썰미> 필요",
+                                "condition": "tags << 눈썰미"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_1": {
+                "summary": "무사히 통과했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 숨을 고른다.\n한 발, 또 한 발.\n거미줄을 간신히 피해, 어둠 속 바닥과 벽면의 실을 분석하며 몸을 낮춘다.\n숨소리조차 억누른 채, 실이 떨리지 않도록 팔꿈치로 무게를 분산하며 기어간다.\n\n조용히, 아주 조용히.\n마침내 실이 닿지 않는 바위 틈 너머로 몸을 통과시켰을 때,\n등 위로 긴장감이 빠져나간다.\n아무 일도 일어나지 않았다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "type": "next"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_2": {
+                "summary": "짐이 거미줄에 걸리고 말았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 한순간, 조심스러움을 버리고 속도를 높였다.\n그 순간, 무언가가 뒤쪽에서 강하게 잡아당기는 것을 느꼈다.\n\n배낭의 끝이 거미줄에 걸리고 말았다.\n단단하게 달라붙어 쉽게 떼어낼 수는 없을 것처럼 보인다.\n\n초조한 기분이 강해진다.\n어떡하지?"
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "떼어내려 잡아당긴다.",
+                                "actionType": "once",
+                                "width": 33,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_3"
+                                    }
+                                ],
+                                "text": "강하게 잡아당기면 떨어질지도 모른다.\n짐을 버릴 수는 없다. 필사적으로 당겨본다.",
+                                "image": ""
+                            },
+                            {
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "food",
+                                        "value": "5",
+                                        "operation": "-"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_7"
+                                    }
+                                ],
+                                "title": "짐을 버린다.",
+                                "text": "짐이 중요한 상황이 아니다.\n이 상황에서 그것이 나타나면 끝장이다.",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once"
+                            },
+                            {
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "items",
+                                        "value": "단검",
+                                        "operation": "remove",
+                                        "count": 1
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_7"
+                                    }
+                                ],
+                                "title": "단검으로 거미줄을 자른다.",
+                                "text": "침착하게 단검을 꺼내 거미줄을 잘라낸다.\n단검은 못쓰게 되겠지만 식량을 버리는 것보다는 낫다.",
+                                "width": 33,
+                                "image": "",
+                                "type": "button",
+                                "actionType": "once",
+                                "condition": "items << 단검"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_3": {
+                "summary": "거대한 거미가 나타나 습격했다. 거미줄에 제대로 걸리고 말았다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "거대한 거미가 천장에서 떨어졌다.\n어둠을 찢으며 거대한 다리가 땅을 내리찍고,\n숨 돌릴 틈도 없이 당신은 옆으로 구른다.\n\n바닥은 이미 거미줄로 덮여 있었다.\n미처 보지 못한 실이 팔에 감기고, 몸을 지탱한 다리가 끈적한 저항에 걸려 넘어졌다.\n다시 몸을 일으키려 했을 때, 이미 당신은 허리까지 실에 휘감겨 있었다.\n\n움직일수록 실이 조인다.\n탈출은, 점점 어려워지고 있었다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "발버둥친다.",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "randvar1",
+                                        "value": "random * 5",
+                                        "operation": "=",
+                                        "hidden": true
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "condition": "randvar1 == 0",
+                                        "priority": 1,
+                                        "weight": 1,
+                                        "value": "page_7"
+                                    },
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_4"
+                                    }
+                                ],
+                                "text": "필사적으로 거미줄에서 벗어나기 위해 몸을 흔든다.",
+                                "image": "",
+                                "conditionText": "20% 확률로 탈출한다."
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_4": {
+                "summary": "거미에게 물렸다. 몸에 독이 퍼진다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "당신은 몸을 뒤틀며 필사적으로 실을 끊으려 한다.\n하지만 그 순간, 어딘가 차가운 감촉이 피부를 찌른다.\n이빨이다.\n\n단단하고 깊숙한 이빨이 살갗을 파고들고,\n다음 순간, 타오르는 듯한 독이 혈관을 따라 퍼져나간다.\n\n손끝이 떨리고, 숨이 거칠어진다.\n이건 단순한 고통이 아니다.\n몸속에서 힘이 녹아 사라지는 감각.\n거미의 독은 당신을 안에서부터 무너뜨리고 있다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "발버둥친다.",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "randvar1",
+                                        "value": "random * 5",
+                                        "operation": "=",
+                                        "hidden": true
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "poison",
+                                        "value": "5",
+                                        "operation": "+"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "condition": "randvar1 == 0",
+                                        "priority": 1,
+                                        "weight": 1,
+                                        "value": "page_7"
+                                    },
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_5"
+                                    }
+                                ],
+                                "text": "필사적으로 거미줄에서 벗어나기 위해 몸을 흔든다.",
+                                "image": "",
+                                "conditionText": "20% 확률로 탈출한다."
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_5": {
+                "summary": "거미는 당신의 힘이 빠지길 기다리는 듯 했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "손가락이 더는 말을 듣지 않는다.\n호흡은 얕고, 눈앞이 흐려진다.\n실을 붙잡고 버티던 손이 풀리고,\n당신은 절반쯤 감긴 시야 속에서 그 거대한 형체를 바라본다.\n\n거미는 움직이지 않는다.\n그저 조용히, 당신을 내려다본다.\n언제 덮칠지도 모르는 채,\n아직도 숨이 붙어 있는 먹잇감이 스스로를 포기하길 기다리는 것처럼."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "발버둥친다.",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [
+                                    {
+                                        "type": "setValue",
+                                        "target": "randvar1",
+                                        "value": "random * 5",
+                                        "operation": "=",
+                                        "hidden": true
+                                    },
+                                    {
+                                        "type": "setValue",
+                                        "target": "hp",
+                                        "value": "1",
+                                        "operation": "-"
+                                    }
+                                ],
+                                "branch": [
+                                    {
+                                        "type": "page",
+                                        "condition": "randvar1 == 0",
+                                        "priority": 1,
+                                        "weight": 1,
+                                        "value": "page_7"
+                                    },
+                                    {
+                                        "type": "page",
+                                        "condition": "hp <= 0",
+                                        "priority": 10,
+                                        "weight": 1,
+                                        "value": "page_6"
+                                    },
+                                    {
+                                        "type": "page",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "page_5"
+                                    }
+                                ],
+                                "text": "필사적으로 거미줄에서 벗어나기 위해 몸을 흔든다.",
+                                "image": "",
+                                "conditionText": "20% 확률로 탈출한다."
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_6": {
+                "summary": "힘이 점점 빠진다...",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "피부는 서서히 감각을 잃고,\n머릿속에 떠오르던 생각들이 하나둘씩 가라앉는다.\n무언가 말하고 싶었지만, 입술은 굳어 있었다.\n\n여긴 어둡고, 차고, 조용하다.\n심장이 마지막으로 떨릴 때\n그저 묘한 평온만이 남는다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
+                                "width": 80,
+                                "events": [],
+                                "branch": [
+                                    {
+                                        "type": "ending",
+                                        "priority": 0,
+                                        "weight": 1,
+                                        "value": "gameover_spider"
+                                    }
+                                ],
+                                "text": "",
+                                "image": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            "page_7": {
+                "summary": "간신히 거미줄에서 탈출했다.",
+                "elements": [
+                    {
+                        "type": "textbox",
+                        "text": "거미줄이 뚝뚝 끊어지는 소리가 이어진다.\n찢어지고, 끌려나오며, 당신은 질질 끌리듯 벗어난다.\n\n몸은 무겁고 숨은 거칠다.\n어디가 어떻게 상했는지 확인할 틈도 없다.\n하지만 발 밑의 감촉이 끈적한 실이 아닌 거친 바닥으로 바뀌는 순간\n확실히 느껴진다.\n살아 있다.\n\n뒤를 돌아볼 용기도 없이, 당신은 그 자리를 벗어난다."
+                    },
+                    {
+                        "type": "choice",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "title": "계속",
+                                "actionType": "once",
                                 "width": 80,
                                 "events": [],
                                 "branch": [

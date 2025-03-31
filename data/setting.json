@@ -1,0 +1,163 @@
+{
+    "events": [
+        {
+            "type": "setValue",
+            "target": "day",
+            "value": "1",
+            "operation": "+",
+            "hidden": true
+        },
+        {
+            "type": "setValue",
+            "target": "food",
+            "value": "1",
+            "operation": "-"
+        },
+        {
+            "type": "setValue",
+            "target": "danger",
+            "value": "1",
+            "operation": "+",
+            "condition": "day == 3",
+            "hidden": true
+        },
+        {
+            "type": "setValue",
+            "target": "danger",
+            "value": "1",
+            "operation": "+",
+            "condition": "day == 7",
+            "hidden": true
+        },
+        {
+            "type": "setValue",
+            "target": "tags",
+            "value": "해독",
+            "operation": "add",
+            "condition": "poison > 0 && items << 해독제"
+        },
+        {
+            "type": "setValue",
+            "target": "poison",
+            "value": "0",
+            "operation": "=",
+            "condition": "tags << 해독"
+        },
+        {
+            "type": "setValue",
+            "target": "items",
+            "value": "해독제",
+            "operation": "remove",
+            "condition": "tags << 해독",
+            "count": 1
+        },
+        {
+            "type": "setValue",
+            "target": "tags",
+            "value": "해독",
+            "operation": "remove",
+            "condition": "tags << 해독"
+        },
+        {
+            "type": "setValue",
+            "target": "hp",
+            "value": "1",
+            "operation": "-",
+            "condition": "poison > 0"
+        },
+        {
+            "type": "setValue",
+            "target": "poison",
+            "value": "1",
+            "operation": "-",
+            "condition": "poison > 0"
+        },
+        {
+            "type": "setValue",
+            "target": "tags",
+            "value": "지혈",
+            "operation": "add",
+            "condition": "bleeding > 0 && items << 붕대"
+        },
+        {
+            "type": "setValue",
+            "target": "bleeding",
+            "value": "3",
+            "operation": "-",
+            "condition": "tags << 지혈"
+        },
+        {
+            "type": "setValue",
+            "target": "items",
+            "value": "붕대",
+            "operation": "remove",
+            "condition": "tags << 지혈",
+            "count": 1
+        },
+        {
+            "type": "setValue",
+            "target": "tags",
+            "value": "지혈",
+            "operation": "remove",
+            "condition": "tags << 지혈"
+        },
+        {
+            "type": "setValue",
+            "target": "hp",
+            "value": "1",
+            "operation": "-",
+            "condition": "bleeding > 0"
+        },
+        {
+            "type": "setValue",
+            "target": "bleeding",
+            "value": "1",
+            "operation": "-",
+            "condition": "bleeding > 0"
+        },
+        {
+            "type": "setValue",
+            "target": "tags",
+            "value": "회복",
+            "operation": "add",
+            "condition": "hp <= maxHp - 2 && items << 회복약"
+        },
+        {
+            "type": "setValue",
+            "target": "hp",
+            "value": "2",
+            "operation": "+",
+            "condition": "tags << 회복"
+        },
+        {
+            "type": "setValue",
+            "target": "items",
+            "value": "회복약",
+            "operation": "remove",
+            "condition": "tags << 회복",
+            "count": 1
+        },
+        {
+            "type": "setValue",
+            "target": "tags",
+            "value": "회복",
+            "operation": "remove",
+            "condition": "tags << 회복"
+        },
+        {
+            "type": "setValue",
+            "target": "mental",
+            "value": "1",
+            "operation": "-",
+            "condition": "scare > 0"
+        },
+        {
+            "type": "setValue",
+            "target": "scare",
+            "value": "1",
+            "operation": "-",
+            "condition": "scare > 0"
+        }
+    ],
+    "maxRound": 10
+}

@@ -1,14 +1,14 @@
 {
-    "species": {
-        "name": "category",
-        "description": "desc",
+    "isolation": {
+        "name": "낙오 사유",
+        "description": "머리가 지끈거린다.\n무슨 일이 있었는지… 곧바로 떠오르지 않는다.\n\n혼란스러운 틈새로 기억을 더듬는다.\n왜 이런 상황이 되었는지,\n어쩌다 혼자 남게 되었는지.",
         "required": 1,
         "elements": [
             {
                 "type": "button",
                 "actionType": "toggle",
-                "title": "title",
-                "text": "text",
+                "title": "실족",
+                "text": "나락의 끝은 몬스터 뿐 아니라 지형지물조차 적대적이었다.\n\n급박한 상황에 위험한 길을 건너다 그만 발이 미끄러지고 말았다.\n\n목숨이 무사한 것은 다행이지만, 돌아갈 길은 너무나도 아득하여 보이지 않는다.\n\n파티원들도 일개 짐꾼을 구하는 데에 쓸 여력은 없었겠지...",
                 "image": "",
                 "width": 25,
                 "events": [
@@ -16,24 +16,445 @@
                         "type": "setValue",
                         "target": "tags",
                         "operation": "add",
-                        "value": "category"
+                        "value": "낙오_사유"
                     },
                     {
                         "type": "setValue",
                         "target": "tags",
                         "operation": "add",
-                        "value": "title",
+                        "value": "실족",
+                        "hidden": true
+                    }
+                ]
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "낙오_사유"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "유기",
+                        "hidden": true
+                    }
+                ],
+                "title": "유기",
+                "text": "전열이 막아내지 못한 사고를 당신은 피하지 못했다.\n\n죽을 정도의 치명상은 아니지만, 행군에 지장을 줄 정도의 부상을 입고 말았다.\n\n주요 파티원도 아닌 짐꾼 때문에 파티의 시간과 자원을 쓸 수는 없었다.\n\n당신은 괜찮다고 하며 자신을 두고 가라고 말했다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "낙오_사유"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "전멸",
+                        "hidden": true
+                    }
+                ],
+                "title": "전멸",
+                "text": "예고 없이, 순식간에 무너졌다.\n\n던전이 모습을 바꿨고, 정체불명의 무언가가 파티를 덮쳤다.\n\n비명, 마법, 금속음, 그리고 침묵. 정신을 잃기 전 마지막 기억이다.\n\n지금 살아 있는 건 당신뿐이다. 왜 하필, 당신만이.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "낙오_사유"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "배신",
+                        "hidden": true
+                    }
+                ],
+                "title": "배신",
+                "text": "위협적인 문지기 몬스터와 마주친 순간, 누군가가 등을 밀쳤다.\n\n당신은 처음부터 미끼로써 고용됐던 것이다.\n\n그들은 당신이 죽었다고 생각하겠지.\n\n반드시 복수하리라. 살아남아야 할 이유가 생겼다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            }
+        ],
+        "maxSelect": 1
+    },
+    "state": {
+        "name": "상태",
+        "description": "몸이 무겁다.\n움직이긴 했지만, 그게 다였다.\n\n쓰러지기 전의 부상이 아직도 온몸에 남아 있다.\n뼈가 부러졌는지, 어디가 찢어진 건지조차 제대로 감각이 없다.\n\n침착하게 호흡을 가다듬는다.\n살아남으려면, 먼저 자신의 상태부터 파악해야 한다.",
+        "elements": [
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "상태"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "출혈",
                         "hidden": true
                     },
                     {
                         "type": "setValue",
-                        "target": "gold",
+                        "target": "bleeding",
+                        "value": "3",
+                        "operation": "+"
+                    }
+                ],
+                "title": "출혈",
+                "text": "살갗이 깊게 찢긴 듯 하다.\n\n계속해서 피가 흘러나오고 있다.\n\n적절한 조치를 취하지 않으면 위험할테지.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "상태"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "과다출혈",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "bleeding",
                         "value": "2",
                         "operation": "+"
                     }
-                ]
+                ],
+                "title": "과다출혈",
+                "text": "잠깐만...\n출혈이 생각했던 것보다 훨씬 심각하다.",
+                "width": 25,
+                "image": "",
+                "condition": "tags << 출혈",
+                "hidden": true,
+                "type": "button",
+                "actionType": "toggle",
+                "conditionText": "<출혈> 필요"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "상태"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "골절",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "fracture",
+                        "value": "true",
+                        "operation": "="
+                    }
+                ],
+                "title": "골절",
+                "text": "아무래도 뼈가 부러진 것 같다.\n\n적당한 크기의 나무토막과 옷을 찢어 부목을 만들기로 하자.\n\n이런 상황에 움직임에 제약이 생기다니, 참으로 곤란하다...",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "상태"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "공황",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "scare",
+                        "value": "3",
+                        "operation": "+"
+                    }
+                ],
+                "title": "공황",
+                "text": "호흡이 가빠지고, 눈앞이 흐릿해진다.\n\n머릿속이 복잡하다. 당장이라도 무너질 것 같다.\n\n이 상황에 누가 정신을 붙잡을 수 있겠는가?",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
             }
         ],
-        "maxSelect": 1
+        "required": 2
+    },
+    "ability": {
+        "name": "능력",
+        "description": "짐꾼이라곤 해도, 손 놓고 멍하니 있었던 건 아니다.\n\n하도 많은 파티를 따라다니다 보니, 나름대로 몸에 밴 것도 있다.\n쓸모 있다고는 누구도 말해주지 않았지만,\n지금 같은 상황에선 그나마 믿을 수 있는 무기일지도 모른다.\n\n떠올려보자.\n당신이 잘할 수 있는 건, 뭐였더라.",
+        "elements": [
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "능력"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "식생학",
+                        "hidden": true
+                    }
+                ],
+                "title": "식생학",
+                "text": "당신은 식물의 생태와 용도에 대한 지식이 풍부합니다.\n\n야생 버섯이나 약초를 식별할 수 있습니다.\n\n일부 식물형 몬스터와의 상호작용에 추가 선택지가 등장할 수 있습니다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "능력"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "낙법",
+                        "hidden": true
+                    }
+                ],
+                "title": "낙법",
+                "text": "높은 곳에서 떨어져도 무사하거나 피해를 최소화할 수 있다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "능력"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "눈썰미",
+                        "hidden": true
+                    }
+                ],
+                "title": "눈썰미",
+                "text": "당신은 무언가를 발견해내는 예리한 눈썰미를 가지고 있다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            }
+        ],
+        "maxSelect": 3
+    },
+    "item": {
+        "name": "소지품",
+        "description": "가지고 있던 배낭이 생각나 안에 든 것을 살펴본다.\n\n내용물은 얼마 되지 않는다.\n이게 지금 가진 전부다.\n\n하지만 이제부턴 이걸로 버텨야 한다.",
+        "elements": [
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "소지품"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "보존_식량",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "food",
+                        "value": "3",
+                        "operation": "+"
+                    }
+                ],
+                "title": "보존 식량",
+                "text": "추가적으로 챙겨둔 식량 꾸러미.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "소지품"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "밧줄",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "items",
+                        "value": "밧줄",
+                        "operation": "add",
+                        "count": 1
+                    }
+                ],
+                "title": "밧줄",
+                "text": "다양한 용도로 사용할 수 있는 제법 튼튼한 밧줄이다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "소지품"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "야영_물자",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "items",
+                        "value": "\"야영 물자\"",
+                        "operation": "add",
+                        "count": 1
+                    }
+                ],
+                "title": "야영 물자",
+                "text": "간이 천막과 잠자리를 만들 수 있는 천 꾸러미.\n\n충분히 안전한 장소가 있다면 우수한 품질의 휴식을 할 수 있다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "소지품"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "붕대",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "items",
+                        "value": "붕대",
+                        "operation": "add",
+                        "count": 1
+                    }
+                ],
+                "title": "붕대",
+                "text": "소모하여 출혈을 줄일 수 있다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            },
+            {
+                "events": [
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "소지품"
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "tags",
+                        "operation": "add",
+                        "value": "단검",
+                        "hidden": true
+                    },
+                    {
+                        "type": "setValue",
+                        "target": "items",
+                        "value": "단검",
+                        "operation": "add",
+                        "count": 1
+                    }
+                ],
+                "title": "단검",
+                "text": "무언가를 베어낼 수 있는 가벼운 단검이다.\n\n하지만 이걸로 몬스터와 맞설 생각은 하지 않는 것이 좋다.",
+                "width": 25,
+                "image": "",
+                "type": "button",
+                "actionType": "toggle"
+            }
+        ],
+        "maxSelect": 3
     }
 }

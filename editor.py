@@ -12,6 +12,7 @@ DATA_FILES = {
     "Custom": "data/custom.json",
     "Scene": "data/scenes.json",
     "Endings": "data/endings.json",
+    "Setting": "data/setting.json",
 }
 
 class JSONEditor(tk.Tk):
@@ -23,12 +24,15 @@ class JSONEditor(tk.Tk):
         menubar = tk.Menu(self)
         file_menu = tk.Menu(menubar, tearoff=0)
         file_menu.add_command(label="저장 (Ctrl+S)", command=self.save_data_json)
+        file_menu.add_command(label="로드 (Ctrl+L)", command=self.load_data_list)
         file_menu.add_command(label="빌드 및 실행 (Ctrl+R)", command=self.build_and_run)
         menubar.add_cascade(label="파일", menu=file_menu)
         self.config(menu=menubar)
 
         self.bind_all("<Control-s>", lambda event: self.save_data_json())
         self.bind_all("<Control-S>", lambda event: self.save_data_json())
+        self.bind_all("<Control-l>", lambda event: self.load_data_list())
+        self.bind_all("<Control-L>", lambda event: self.load_data_list())
         self.bind_all("<Control-r>", lambda event: self.build_and_run())
         self.bind_all("<Control-R>", lambda event: self.build_and_run())
 
@@ -61,17 +65,17 @@ class JSONEditor(tk.Tk):
         self.image_frame = ttk.Frame(self.notebook)
         self.notebook.add(self.image_frame, text="이미지")
 
+        self.setting_frame = ttk.Frame(self.notebook)
+        self.notebook.add(self.setting_frame, text="설정")
+
         self.build_custom_tab()
         self.build_scene_tab()
         self.build_endings_tab()
         self.build_resource_tab()
         self.build_image_tab()
+        self.build_setting_tab()
 
-        self.load_resource_json()
-        self.load_custom_json()
-        self.load_scene_json()
-        self.load_endings_json()
-        self.load_image_list()
+        self.load_data_list()
 
         self.style = ttk.Style(self)
         self.style.configure("TFrame", background="#f4f4f4")
@@ -79,6 +83,14 @@ class JSONEditor(tk.Tk):
         self.style.configure("TCheckbutton", background="#f4f4f4", font=(default_font, 10))
         self.style.configure("TButton", font=(default_font, 10))
         self.configure(background="#f4f4f4")
+
+    def load_data_list(self):
+        self.load_resource_json()
+        self.load_custom_json()
+        self.load_scene_json()
+        self.load_endings_json()
+        self.load_image_list()
+        self.load_setting_json()
 
     def load_image_list(self):
         image_dir = os.path.join(os.getcwd(), "image")
@@ -142,6 +154,7 @@ class JSONEditor(tk.Tk):
 
         for field, (label_text, tooltip_text) in {
             "name": ("변수 명", "이 값이 화면에 표시될 때 사용될 이름입니다."),
+            "description": ("설명", "이 값의 역할을 설명합니다."),
             "realValue": ("초기값", "CYOA 시작 시 이 변수가 갖는 기본값입니다."),
         }.items():
             frame = ttk.Frame(self.resource_right, padding=5)
@@ -164,6 +177,7 @@ class JSONEditor(tk.Tk):
 
         for field, label_text, tooltip_text in [
             ("show", "표시 여부", "이 변수를 하단의 UI에 표시할지 여부입니다."),
+            ("showIfPositive", "양수일 때만 표시", "이 값이 0 이하나 false일 경우에는 표시하지 않습니다."),
             ("positive", "긍정적인 값", "이 변수가 높을수록 좋은 것인지 여부입니다. 증가하거나 감소할 때, 녹색으로 표기할지 빨간색으로 표기할지를 결정합니다."),
             ("summary", "요약에 표시", "이 변수가 엔딩 이후 최종 요약에서 표기될 지에 대한 여부입니다."),
         ]:
@@ -611,6 +625,10 @@ class JSONEditor(tk.Tk):
         field_vars["condition"] = condition_var
         tip(condition_entry, "조건을 만족하지 않으면 비활성화됩니다.")
 
+        condition_text_var = labeled_entry("조건 텍스트", data.get("conditionText", ""), parent=left_frame)
+        field_vars["conditionText"] = condition_text_var
+        tip(left_frame.winfo_children()[-1].winfo_children()[1], "조건을 설명하는 텍스트입니다. 비워두면 표시되지 않습니다.")
+
         hidden_var = tk.BooleanVar(value=data.get("hidden", False))
         hidden_check = ttk.Checkbutton(left_frame, text="숨김", variable=hidden_var)
         hidden_check.pack(anchor='w', pady=2)
@@ -779,6 +797,9 @@ class JSONEditor(tk.Tk):
             data["text"] = text_widget.get("1.0", "end").strip()
             data["width"] = width_var.get()
             data["image"] = image_var.get().strip()
+            data["conditionText"] = field_vars["conditionText"].get().strip()
+            if not data["conditionText"]:
+                data.pop("conditionText", None)
 
             cond = condition_var.get().strip()
             if cond:
@@ -866,6 +887,13 @@ class JSONEditor(tk.Tk):
         condition_entry.pack(fill='x', pady=2)
         tip(condition_entry, "이 이벤트가 적용될 조건입니다. 비워두면 항상 적용됩니다.")
 
+        condition_text_var = tk.StringVar(value=event_data.get("conditionText", ""))
+        condition_text_label = ttk.Label(frame, text="조건 텍스트")
+        condition_text_label.pack(anchor='w')
+        condition_text_entry = ttk.Entry(frame, textvariable=condition_text_var)
+        condition_text_entry.pack(fill='x', pady=2)
+        tip(condition_text_entry, "조건을 설명하는 텍스트입니다. 실제 기능과 무관하게 선택지에 표시됩니다.")
+
         hidden_var = tk.BooleanVar(value=event_data.get("hidden", False))
         hidden_check = ttk.Checkbutton(frame, text="선택지에 이 효과를 표기하지 않음", variable=hidden_var)
         hidden_check.pack(anchor='w', pady=(5, 10))
@@ -874,26 +902,41 @@ class JSONEditor(tk.Tk):
         target_label = ttk.Label(frame, text="대상")
         target_label.pack(anchor='w')
         target_combo = ttk.Combobox(frame, textvariable=target_var, state='readonly')
-        target_values = ["태그"] + [self.resource_data[k].get("name", k) for k in self.resource_ids]
+        target_values = ["태그", "소지품"] + [self.resource_data[k].get("name", k) for k in self.resource_ids]
         target_combo['values'] = target_values
         target_combo.pack(fill='x', pady=2)
         tip(target_combo, "변수 또는 태그 중에 효과를 적용할 것을 고릅니다.")
 
         target_var.trace_add('write', lambda *args: update_operation_options())
 
+        count_var = tk.StringVar(value=str(event_data.get("count", "")))
+
+        count_frame = ttk.Frame(frame)
+        count_label = ttk.Label(count_frame, text="수량 (count)")
+        count_label.pack(anchor='w')
+        count_entry = ttk.Entry(count_frame, textvariable=count_var)
+        count_entry.pack(fill='x', pady=2)
+        tip(count_entry, "추가/제거할 수량입니다. 비워두면 기본값 1, 0이면 전부 제거합니다.")
+        count_frame.pack(fill='x', pady=2)
+        count_frame.pack_forget()
+
         def update_operation_options(*args):
             selected = target_var.get()
             current_op = operation_var.get()
 
-            if selected == "태그":
+            if selected == "태그" or selected == "소지품":
                 valid_ops = ["추가하기 (add)", "제거하기 (remove)"]
                 default_op = "추가하기 (add)"
             else:
                 valid_ops = ["값 설정 (=)", "더하기 (+)", "빼기 (-)", "곱하기 (*)", "나누기 (/)"]
                 default_op = "값 설정 (=)"
 
-            operation_combo['values'] = valid_ops
+            if selected == "소지품":
+                count_frame.pack(fill='x', pady=2)
+            else:
+                count_frame.pack_forget()
 
+            operation_combo['values'] = valid_ops
             if current_op in valid_ops:
                 operation_var.set(current_op)
             else:
@@ -914,7 +957,7 @@ class JSONEditor(tk.Tk):
         def save():
             result = {
                 "type": type_var.get(),
-                "target": "tags" if target_var.get() == "태그" else next(
+                "target": "tags" if target_var.get() == "태그" else "items" if target_var.get() == "소지품" else next(
                     (k for k in self.resource_ids if self.resource_data[k].get("name") == target_var.get()), target_var.get()),
                 "value": value_var.get(),
             }
@@ -936,10 +979,18 @@ class JSONEditor(tk.Tk):
 
             if condition_var.get().strip():
                 result["condition"] = condition_var.get().strip()
-            elif "condition" in result:
-                del result["condition"]
+            if condition_text_var.get().strip():
+                result["conditionText"] = condition_text_var.get().strip()
             if hidden_var.get():
                 result["hidden"] = True
+
+            # count 값 추가
+            if target_var.get() == "소지품":
+                count_val = count_var.get().strip()
+                if count_val.isdigit():
+                    result["count"] = int(count_val)
+                elif count_val == "0":
+                    result["count"] = 0
 
             if index is not None:
                 events[index] = result
@@ -957,6 +1008,8 @@ class JSONEditor(tk.Tk):
             target = event_data["target"]
             if target == "tags":
                 target_var.set("태그")
+            elif target == "items":
+                target_var.set("소지품")
             else:
                 target_name = self.resource_data.get(target, {}).get("name", target)
                 target_var.set(target_name)
@@ -1027,7 +1080,7 @@ class JSONEditor(tk.Tk):
             t = type_var.get()
             if t == "page":
                 pages = self.scene_data.get(self.current_scene_id, {}).get("pages", {})
-                page_keys = [k for k in pages if k != current_key]
+                page_keys = list(pages.keys())
                 value_combo['values'] = page_keys
                 value_combo.configure(state='readonly')
             elif t == "ending":
@@ -1152,13 +1205,18 @@ class JSONEditor(tk.Tk):
         ttk.Button(page_btns, text="❌", command=self.delete_page).pack(pady=2)
 
 
-    def refresh_scene_list(self, select_index=0):
+    def refresh_scene_list(self, selected_id=0):
         self.scene_listbox.delete(0, tk.END)
         self.scene_keys = sorted(self.scene_data.keys(), key=lambda k: -self.scene_data[k].get("priority", 0))
         for k in self.scene_keys:
             p = self.scene_data[k].get("priority", 0)
             self.scene_listbox.insert(tk.END, f"{p}: {k}")
         if self.scene_keys:
+            if selected_id and selected_id in self.scene_keys:
+                select_index = self.scene_keys.index(selected_id)
+            else:
+                select_index = 0
+
             self.scene_listbox.select_set(select_index)
             self.scene_listbox.event_generate("<<ListboxSelect>>")
 
@@ -1182,6 +1240,14 @@ class JSONEditor(tk.Tk):
     def update_current_scene(self):
         if not getattr(self, "current_scene_id", None):
             return
+
+        currentKey = self.current_scene_id
+
+        current_data = self.scene_data[currentKey]
+        new_priority = int(self.scene_fields["priority"].get())
+
+        should_refresh = new_priority != current_data.get("priority", 0)
+
         updated = {}
         for k, var in self.scene_fields.items():
             if isinstance(var, tk.BooleanVar):
@@ -1203,8 +1269,8 @@ class JSONEditor(tk.Tk):
             if key != "condition":
                 self.scene_data[self.current_scene_id][key] = value
 
-        self.refresh_scene_list(self.scene_keys.index(self.current_scene_id))
-
+        if should_refresh:
+            self.refresh_scene_list(selected_id=currentKey)
 
 
     def add_scene(self):
@@ -1245,8 +1311,7 @@ class JSONEditor(tk.Tk):
                 }
             }
         }
-        self.refresh_scene_list(select_index=list(self.scene_data.keys()).index(new_id))
-
+        self.refresh_scene_list(selected_id=new_id)
 
 
     def delete_scene(self):
@@ -1262,15 +1327,11 @@ class JSONEditor(tk.Tk):
         idx = selection[0]
         key = self.scene_keys[idx]
 
-        if not messagebox.askyesno("삭제 확인", f"장면 '{key}'을 삭제하시겠습니까?"):
-            return
-
-        # 삭제
-        self.scene_data.pop(key)
-
-        # 다음 선택될 인덱스 계산
-        next_index = idx if idx < len(self.scene_keys) - 1 else idx - 1
-        self.refresh_scene_list(select_index=next_index)
+        if messagebox.askyesno("삭제 확인", f"장면 '{key}'을 삭제하시겠습니까?"):
+            del self.scene_data[key]
+            remaining_keys = sorted(self.scene_data.keys(), key=lambda k: -self.scene_data[k].get("priority", 0))
+            next_key = remaining_keys[max(0, idx - 1)] if remaining_keys else None
+            self.refresh_scene_list(selected_id=next_key)
 
 
     def refresh_page_list(self):
@@ -1418,6 +1479,22 @@ class JSONEditor(tk.Tk):
                 choice_elements = e.get("elements", [])
                 break
 
+        if not choice_elements:
+            choice_elements.append({
+                "type": "button",
+                "title": "계속",
+                "actionType": "once",
+                "width": 80,
+                "events": [],
+                "branch": [
+                    {
+                        "priority": 0,
+                        "weight": 1,
+                        "type": "next"
+                    }
+                ]
+            })
+
         self.choice_listbox = tk.Listbox(choice_frame, height=6)
         self.choice_listbox.pack(side='left', fill='both', expand=True)
 
@@ -1491,7 +1568,6 @@ class JSONEditor(tk.Tk):
 
 
     def build_endings_tab(self):
-
         self.ending_left = ttk.Frame(self.endings_frame, width=200)
         self.ending_left.pack(side='left', fill='y')
         self.ending_right = ttk.Frame(self.endings_frame, padding=10)
@@ -1512,15 +1588,9 @@ class JSONEditor(tk.Tk):
         self.del_ending_btn = ttk.Button(self.ending_btn_frame, text="❌", command=self.delete_ending)
         self.del_ending_btn.pack(fill='x', pady=2)
 
-    def refresh_ending_list(self, select_index=0):
-        self.ending_listbox.delete(0, tk.END)
-        self.ending_keys = sorted(self.endings_data.keys(), key=lambda k: -self.endings_data[k].get("priority", 0))
-        for k in self.ending_keys:
-            p = self.endings_data[k].get("priority", 0)
-            self.ending_listbox.insert(tk.END, f"{p}: {k}")
-        if self.ending_keys:
-            self.ending_listbox.select_set(select_index)
-            self.on_ending_select()
+        # 오른쪽은 선택 시 생성
+        self.ending_fields = {}
+        self.ending_image_preview = None
 
     def on_ending_select(self, event=None):
         selection = self.ending_listbox.curselection()
@@ -1530,12 +1600,11 @@ class JSONEditor(tk.Tk):
         key = self.ending_keys[idx]
         self.current_ending_id = key
 
-        for widget in self.ending_right.winfo_children():
-            widget.destroy()
-
-        self.ending_fields = {}
         data = self.endings_data[key]
         textbox = data.get("elements", [{}])[0]
+
+        for widget in self.ending_right.winfo_children():
+            widget.destroy()
 
         def labeled_entry(label_text, var):
             frame = ttk.Frame(self.ending_right)
@@ -1543,56 +1612,78 @@ class JSONEditor(tk.Tk):
             ttk.Label(frame, text=label_text, width=10).pack(side='left')
             entry = ttk.Entry(frame, textvariable=var)
             entry.pack(side='left', fill='x', expand=True)
+            entry.bind("<FocusOut>", lambda e: self.update_current_ending())
 
-        title_var = tk.StringVar(value=data.get("title", ""))
-        condition_var = tk.StringVar(value=data.get("condition", ""))
-        priority_var = tk.IntVar(value=data.get("priority", 0))
-        image_var = tk.StringVar(value=textbox.get("image", ""))
+        self.ending_fields["title"] = tk.StringVar(value=data.get("title", ""))
+        self.ending_fields["condition"] = tk.StringVar(value=data.get("condition", ""))
+        self.ending_fields["priority"] = tk.IntVar(value=data.get("priority", 0))
+        self.ending_fields["image"] = tk.StringVar(value=textbox.get("image", ""))
 
-        labeled_entry("제목", title_var)
-        labeled_entry("조건식", condition_var)
-        labeled_entry("우선도", priority_var)
+        labeled_entry("제목", self.ending_fields["title"])
+        labeled_entry("조건식", self.ending_fields["condition"])
+        labeled_entry("우선도", self.ending_fields["priority"])
 
         ttk.Label(self.ending_right, text="내용").pack(anchor='w', pady=(8, 2))
-        self.ending_text = tk.Text(self.ending_right, height=6, wrap='word')
-        self.ending_text.insert("1.0", data.get("elements", [{}])[0].get("text", ""))
-        self.ending_text.pack(fill='both', expand=True)
-        
-        # 이미지 선택
+        text_widget = tk.Text(self.ending_right, height=6, wrap='word')
+        text_widget.insert("1.0", textbox.get("text", ""))
+        text_widget.pack(fill='both', expand=True)
+        text_widget.edit_modified(False)
+
+        def on_ending_text_modified(event):
+            widget = event.widget
+            if widget.edit_modified():
+                widget.edit_modified(False)
+                self.update_current_ending()
+        text_widget.bind("<<Modified>>", on_ending_text_modified)
+        self.ending_fields["text"] = text_widget
+
         img_frame = ttk.Frame(self.ending_right)
         img_frame.pack(fill='x', pady=4)
         ttk.Label(img_frame, text="이미지", width=10).pack(side='left')
-        image_entry = ttk.Entry(img_frame, textvariable=image_var, state='readonly')
+        image_entry = ttk.Entry(img_frame, textvariable=self.ending_fields["image"], state='readonly')
         image_entry.pack(side='left', fill='x', expand=True)
-        ttk.Button(img_frame, text="...", command=lambda: self.open_image_selector(lambda f: (image_var.set(f), update_image_preview()))).pack(side='left')
+
+        def on_image_selected(f):
+            self.ending_fields["image"].set(f)
+            self.update_ending_image_preview()
+            self.update_current_ending()
+
+        ttk.Button(img_frame, text="...", command=lambda: self.open_image_selector(on_image_selected)).pack(side='left')
 
         self.ending_image_preview = ttk.Label(self.ending_right, text="이미지 미리보기", anchor='center')
         self.ending_image_preview.pack(fill='both', pady=4, expand=True)
+        self.update_ending_image_preview()
 
-        def update_image_preview():
-            from PIL import Image, ImageTk
-            fname = image_var.get()
-            if not fname:
-                self.ending_image_preview.config(image='', text="이미지 미리보기")
-                return
-            path = os.path.join("image", fname)
-            try:
-                img = Image.open(path)
-                img.thumbnail((300, 300))
-                self.tk_ending_preview = ImageTk.PhotoImage(img)
-                self.ending_image_preview.config(image=self.tk_ending_preview, text='')
-            except:
-                self.ending_image_preview.config(image='', text='불러오기 실패')
 
-        update_image_preview()
-        self._suspend_update = False
+    def update_ending_image_preview(self):
+        from PIL import Image, ImageTk
+        fname = self.ending_fields["image"].get()
+        if not fname:
+            self.ending_image_preview.config(image='', text="이미지 미리보기")
+            return
+        path = os.path.join("image", fname)
+        try:
+            img = Image.open(path)
+            img.thumbnail((300, 300))
+            self.tk_ending_preview = ImageTk.PhotoImage(img)
+            self.ending_image_preview.config(image=self.tk_ending_preview, text='')
+        except:
+            self.ending_image_preview.config(image='', text='불러오기 실패')
+
 
     def update_current_ending(self):
         if not getattr(self, "current_ending_id", None):
             return
+
+        key = self.current_ending_id
+
+        current_data = self.endings_data[key]
+        new_priority = int(self.ending_fields["priority"].get())
+
+        should_refresh = new_priority != current_data.get("priority", 0)
+
         updated = {
-            "title": self.ending_fields["title"].get(),
-            "condition": self.ending_fields["condition"].get().strip(),
+            "title": self.ending_fields["title"].get().strip(),
             "priority": int(self.ending_fields["priority"].get()),
             "elements": [
                 {
@@ -1601,15 +1692,18 @@ class JSONEditor(tk.Tk):
                 }
             ]
         }
+        if self.ending_fields["condition"].get().strip():
+            updated["condition"] = self.ending_fields["condition"].get().strip()
         image_val = self.ending_fields["image"].get().strip()
         if image_val:
             updated["elements"][0]["image"] = image_val
 
-        if not updated["condition"]:
-            del updated["condition"]
+        self.endings_data[key] = updated
 
-        self.endings_data[self.current_ending_id] = updated
-        self.refresh_ending_list(select_index=self.ending_keys.index(self.current_ending_id))
+        if should_refresh:
+            self.refresh_ending_list(selected_id=key)
+
+
 
     def add_ending(self):
         from tkinter.simpledialog import askstring
@@ -1630,7 +1724,8 @@ class JSONEditor(tk.Tk):
                 }
             ]
         }
-        self.refresh_ending_list(select_index=list(self.endings_data.keys()).index(new_id))
+        self.refresh_ending_list(selected_id=new_id)
+
 
     def delete_ending(self):
         if len(self.endings_data) <= 1:
@@ -1643,8 +1738,30 @@ class JSONEditor(tk.Tk):
         key = self.ending_keys[idx]
         if messagebox.askyesno("삭제 확인", "이 엔딩을 삭제하시겠습니까?"):
             del self.endings_data[key]
-            next_index = max(0, idx - 1)
-            self.refresh_ending_list(select_index=next_index)
+            remaining_keys = sorted(self.endings_data.keys(), key=lambda k: -self.endings_data[k].get("priority", 0))
+            next_key = remaining_keys[max(0, idx - 1)] if remaining_keys else None
+            self.refresh_ending_list(selected_id=next_key)
+
+
+    def refresh_ending_list(self, selected_id=None):
+        self.ending_listbox.delete(0, tk.END)
+
+        self.ending_keys = sorted(self.endings_data.keys(), key=lambda k: -self.endings_data[k].get("priority", 0))
+
+        for k in self.ending_keys:
+            p = self.endings_data[k].get("priority", 0)
+            self.ending_listbox.insert(tk.END, f"{p}: {k}")
+
+        if self.ending_keys:
+            if selected_id and selected_id in self.ending_keys:
+                select_index = self.ending_keys.index(selected_id)
+            else:
+                select_index = 0
+
+            self.ending_listbox.select_set(select_index)
+            self.ending_listbox.see(select_index)
+            self.on_ending_select()
+
 
     def build_image_tab(self):
         self.image_left = ttk.Frame(self.image_frame, width=250)
@@ -1841,6 +1958,76 @@ class JSONEditor(tk.Tk):
         refresh_image_list()
         self.wait_window(popup)
 
+    def build_setting_tab(self):
+        self.setting_round_var = tk.StringVar()
+        self.setting_event_listbox = tk.Listbox(self.setting_frame, height=6)
+
+        # 라운드 설정 필드
+        round_frame = ttk.Frame(self.setting_frame, padding=10)
+        round_frame.pack(fill='x')
+        ttk.Label(round_frame, text="최대 장면").pack(side='left')
+        ttk.Entry(round_frame, textvariable=self.setting_round_var).pack(side='left', padx=5)
+        self.create_tooltip(round_frame, "몇 번의 장면이 나온 후 엔딩이 나올지를 결정합니다. 0일 경우, 무한으로 취급.")
+
+        # 반복 이벤트 라벨
+        ttk.Label(self.setting_frame, text="장면이 끝날 때마다 반복되는 이벤트").pack(anchor='w', pady=(10, 4))
+
+        # 리스트와 버튼 프레임을 묶는 상위 프레임
+        event_area = ttk.Frame(self.setting_frame)
+        event_area.pack(fill='both', expand=True)
+
+        # 이벤트 리스트박스
+        event_scroll = ttk.Scrollbar(event_area, orient='vertical')
+        self.setting_event_listbox = tk.Listbox(event_area, height=6, yscrollcommand=event_scroll.set)
+        event_scroll.config(command=self.setting_event_listbox.yview)
+
+        self.setting_event_listbox.pack(side='left', fill='both', expand=True)
+        self.setting_event_listbox.bind("<Double-Button-1>", self.edit_setting_event)
+        event_scroll.pack(side='left', fill='y')
+
+        # 버튼 영역
+        event_btns = ttk.Frame(event_area)
+        event_btns.pack(side='left', padx=5)
+
+        ttk.Button(event_btns, text="➕", command=self.add_setting_event).pack(pady=2)
+        ttk.Button(event_btns, text="✏", command=self.edit_setting_event).pack(pady=2)
+        ttk.Button(event_btns, text="❌", command=self.delete_setting_event).pack(pady=2)
+
+    def refresh_setting_fields(self):
+        round_val = str(self.setting_data.get("maxRound", 0))
+        self.setting_round_var.set(round_val)
+
+    def refresh_setting_event_list(self):
+        self.setting_event_listbox.delete(0, tk.END)
+        for ev in self.setting_data.get("events", []):
+            desc = f"{ev.get('type', '')} → {ev.get('target', '')} {ev.get('operation', '')} {ev.get('value', '')}"
+            if ev.get("condition"):
+                desc += f" (조건: {ev['condition']})"
+            self.setting_event_listbox.insert(tk.END, desc)
+
+    def add_setting_event(self):
+        events = self.setting_data.setdefault("events", [])
+        self.open_event_editor("setting", "setting", events, index=None)
+        self.refresh_setting_event_list()
+
+    def edit_setting_event(self, event=None):
+        sel = self.setting_event_listbox.curselection()
+        if not sel:
+            return
+        idx = sel[0]
+        events = self.setting_data.get("events", [])
+        self.open_event_editor("setting", "setting", events, index=idx)
+        self.refresh_setting_event_list()
+
+    def delete_setting_event(self):
+        sel = self.setting_event_listbox.curselection()
+        if not sel:
+            return
+        idx = sel[0]
+        if messagebox.askyesno("삭제 확인", "이 이벤트를 삭제하시겠습니까?"):
+            self.setting_data.get("events", []).pop(idx)
+            self.refresh_setting_event_list()
+
 
     def on_combobox_selected(self, field, combo, input_var, input_entry, exists_var):
         selected_name = combo.get()
@@ -1894,7 +2081,8 @@ class JSONEditor(tk.Tk):
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 self.scene_data = json.load(f)
-            self.refresh_scene_list(select_index=0)
+            first_key = next(iter(self.scene_data), None)
+            self.refresh_scene_list(selected_id=first_key)
         except Exception as e:
             messagebox.showerror("불러오기 오류", str(e))
 
@@ -1903,9 +2091,21 @@ class JSONEditor(tk.Tk):
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 self.endings_data = json.load(f)
-            self.refresh_ending_list(select_index=0)
+            first_key = next(iter(self.endings_data), None)
+            self.refresh_ending_list(selected_id=first_key)
         except Exception as e:
             messagebox.showerror("불러오기 오류", str(e))
+
+    def load_setting_json(self):
+        path = DATA_FILES["Setting"]
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                self.setting_data = json.load(f)
+            self.refresh_setting_fields()
+            self.refresh_setting_event_list()
+        except Exception as e:
+            messagebox.showerror("불러오기 오류", str(e))
+
 
     def refresh_resource_list(self, select_index=None):
         self.resource_listbox.delete(0, tk.END)
@@ -2059,6 +2259,7 @@ class JSONEditor(tk.Tk):
                 "realValue": 0,
                 "value": 0,
                 "show": True,
+                "showIfPositive": False,
                 "positive": True,
                 "summary": True
             }
@@ -2155,9 +2356,14 @@ class JSONEditor(tk.Tk):
                 json.dump(self.scene_data, f, indent=4, ensure_ascii=False)
             with open(DATA_FILES["Endings"], 'w', encoding='utf-8') as f:
                 json.dump(self.endings_data, f, indent=4, ensure_ascii=False)
+            with open(DATA_FILES["Setting"], 'w', encoding='utf-8') as f:
+                self.setting_data["maxRound"] = int(self.setting_round_var.get()) if self.setting_round_var.get().isdigit() else 0
+                json.dump(self.setting_data, f, indent=4, ensure_ascii=False)
+
             messagebox.showinfo("저장 완료", "모든 데이터가 저장되었습니다.")
         except Exception as e:
             messagebox.showerror("저장 실패", str(e))
+
 
 
     def build_and_run(self):
