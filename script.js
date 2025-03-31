@@ -402,9 +402,20 @@ function createElementItem(item, category = null) {
         container.className = 'choice-group';
         container.style.flexBasis = `calc(${item.width ?? 100}% - 1rem)`;
 
+        let currentWidth = 0;
+        let currentLine = createFlexLine();
+        container.appendChild(currentLine);
+
         for (const option of item.elements ?? []) {
+            const width = option.width ?? 100;
+            if (currentWidth + width > 100) {
+                currentLine = createFlexLine();
+                container.appendChild(currentLine);
+                currentWidth = 0;
+            }
             const btn = createButton(option, 'choice', choiceId);
-            container.appendChild(btn);
+            currentLine.appendChild(btn);
+            currentWidth += width;
         }
 
         return container;
@@ -725,13 +736,10 @@ function startEnding(endingId = null) {
 
 function returnValue(expr) {
     const tokens = tokenize(expr);
-//console.log("Tokens:", tokens);
 
     const replaced = replaceTokens(tokens);
-//console.log("Replaced:", replaced);
 
     const postfix = toPostfix(replaced);
-//console.log("Postfix:", postfix);
 
     const result = evaluatePostfix(postfix);
     return typeof result === 'number' ? Math.floor(result) : result;
@@ -809,18 +817,18 @@ function toPostfix(tokens) {
                 opStack.length &&
                 isOperator(opStack[opStack.length - 1]) &&
                 precedence[opStack[opStack.length - 1]] >= precedence[tok]
-                ) {
+            ) {
                 output.push(opStack.pop());
+            }
+            opStack.push(tok);
+        } else {
+            console.warn(`Unknown token encountered during toPostfix: ${tok}`);
         }
-        opStack.push(tok);
-    } else {
-        console.warn(`Unknown token encountered during toPostfix: ${tok}`);
     }
-}
 
-while (opStack.length) output.push(opStack.pop());
+    while (opStack.length) output.push(opStack.pop());
 
-return output;
+    return output;
 }
 
 
@@ -1334,6 +1342,42 @@ async function downloadElementAsImage(element, filename, callback) {
     if (typeof callback === 'function') {
         callback();
     }
+}
+
+function countTextLength() {
+    const obj = {
+        resources: resources,
+        custom: customData,
+        scene: scene,
+        endings: endings
+    };
+    const keysToCheck = ["title", "text", "name", "description", "summary"];
+    let total = 0;
+
+    function recursiveSearch(value) {
+        if (typeof value === "string") return value.length;
+
+        if (Array.isArray(value)) {
+            return value.reduce((sum, item) => sum + recursiveSearch(item), 0);
+        }
+
+        if (typeof value === "object" && value !== null) {
+            let sum = 0;
+            for (const key in value) {
+                if (keysToCheck.includes(key) && typeof value[key] === "string") {
+                    sum += value[key].length;
+                } else {
+                    sum += recursiveSearch(value[key]);
+                }
+            }
+            return sum;
+        }
+
+        return 0;
+    }
+
+    total = recursiveSearch(obj);
+    return total;
 }
 
 window.onload = startGame;
