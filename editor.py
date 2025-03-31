@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, font
 import json
+import sys
 import os
+from http.server import SimpleHTTPRequestHandler, HTTPServer
+import threading, webbrowser
 import webbrowser
 import threading
-from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 DATA_FILES = {
     "Intro": "data/intro.json",
@@ -18,6 +20,12 @@ DATA_FILES = {
 class JSONEditor(tk.Tk):
     def __init__(self):
         super().__init__()
+
+        if getattr(sys, 'frozen', False):
+            self.base_path = os.path.dirname(sys.executable)
+        else:
+            self.base_path = os.path.dirname(os.path.abspath(__file__))
+
         self.title("CYOA 데이터 편집기")
         self.geometry("1280x640")
 
@@ -2346,17 +2354,21 @@ class JSONEditor(tk.Tk):
         widget.bind("<Enter>", on_enter)
         widget.bind("<Leave>", on_leave)
 
+
     def save_data_json(self):
         try:
-            with open(DATA_FILES["Resource"], 'w', encoding='utf-8') as f:
+            def full_path(key):
+                return os.path.join(self.base_path, DATA_FILES[key])
+
+            with open(full_path("Resource"), 'w', encoding='utf-8') as f:
                 json.dump(self.resource_data, f, indent=4, ensure_ascii=False)
-            with open(DATA_FILES["Custom"], 'w', encoding='utf-8') as f:
+            with open(full_path("Custom"), 'w', encoding='utf-8') as f:
                 json.dump(self.custom_data, f, indent=4, ensure_ascii=False)
-            with open(DATA_FILES["Scene"], 'w', encoding='utf-8') as f:
+            with open(full_path("Scene"), 'w', encoding='utf-8') as f:
                 json.dump(self.scene_data, f, indent=4, ensure_ascii=False)
-            with open(DATA_FILES["Endings"], 'w', encoding='utf-8') as f:
+            with open(full_path("Endings"), 'w', encoding='utf-8') as f:
                 json.dump(self.endings_data, f, indent=4, ensure_ascii=False)
-            with open(DATA_FILES["Setting"], 'w', encoding='utf-8') as f:
+            with open(full_path("Setting"), 'w', encoding='utf-8') as f:
                 self.setting_data["maxRound"] = int(self.setting_round_var.get()) if self.setting_round_var.get().isdigit() else 0
                 json.dump(self.setting_data, f, indent=4, ensure_ascii=False)
 
@@ -2365,15 +2377,26 @@ class JSONEditor(tk.Tk):
             messagebox.showerror("저장 실패", str(e))
 
 
-
     def build_and_run(self):
         self.save_data_json()
+
+        if getattr(sys, 'frozen', False):
+            base_path = os.path.dirname(sys.executable)
+        else:
+            base_path = os.path.dirname(os.path.abspath(__file__))
+
         def run_server():
-            os.chdir(os.path.dirname(os.path.abspath(__file__)))
-            server = HTTPServer(('localhost', 8000), SimpleHTTPRequestHandler)
-            server.serve_forever()
+            os.chdir(base_path)
+            try:
+                server = HTTPServer(('localhost', 8000), SimpleHTTPRequestHandler)
+                print("[서버 시작] http://localhost:8000")
+                server.serve_forever()
+            except Exception as e:
+                print("[서버 오류]", e)
+
         threading.Thread(target=run_server, daemon=True).start()
         webbrowser.open('http://localhost:8000/index.html')
+
 
 if __name__ == "__main__":
     app = JSONEditor()
